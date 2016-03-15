@@ -5,5 +5,5 @@ app = Flask(__name__)
 app.config.from_object('settings')
 db = SQLAlchemy(app)
 
-from plantDiary import views
+from gardenDiary import views
 from user import views

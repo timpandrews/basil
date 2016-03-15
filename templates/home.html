@@ -1,16 +1,89 @@
 {% extends 'base.html' %}
 
-
+{% block jumbotron %}
+    <div class="jumbotron">
+        <p class="center">
+            <img class="logo_jumbotron" src="{{ url_for('static', filename='img/gardenShare_logoBlack.png') }}">
+        </p>
+        <p>Garden Share lets you track all you gardening success (and failures) and if you like you can share your gardening experience with your friends and followers.</p>
+        <p class="center">
+            <a class="btn btn-lg btn-default" href="#features" role="button">Learn More &raquo;</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-lg btn-default" href="#" role="button">Sing Up</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-lg btn-default" href="#" role="button">Login</a>
+        </p>
+    </div>
+{% endblock %}
 
 {% block content %}
-
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-
-            <h1>Dashboard</h1>
-
-        </div>
-    </div>
-
-
+    <div class="row" id="features">
+        <div class="col-sm-4">
+            <p class="center"><i class="fa fa-pagelines fa-3x"></i></p>
+            <p class="lead center">Garden Log/Diary</p>
+            <p>Keep a log/diary of you gardening experience.  Include pictures and videos.  Show off your sucess or help others learn from your mistakes.</p>
+        </div> <!-- /col -->
+        <div class="col-sm-4">
+            <p class="center"><i class="fa fa-share-alt fa-3x"></i></p>
+            <p class="lead center">Share Your Garden</p>
+            <p>Share your garden with the world.  Or just share it with a few select friends.  You control what you share and who you share it with.</p>
+        </div> <!-- /col -->
+        <div class="col-sm-4">
+            <p class="center"><i class="fa fa-user fa-3x"></i></p>
+            <p class="lead center">Follow Other Gardeners</p>
+            <p>Follow your Expert Gardeners to see how they do or follow your friends to see how you compare.</p>
+        </div> <!-- /col -->
+    </div> <!-- /row -->
+    <br><br><br><br><br><br>
+    <div class="row" id="pricing">
+        <div class="col-sm-11 col-sm-offset-1">
+            <div class="row">
+                <div class="col-sm-3 col-sm-offset-1">
+                    <div class="panel panel-default text-center panel-pricing">
+                        <div class="panel-heading">
+                            <p>$<span class="amount">Free</span></p>
+                            <p>Free-Trial</p>
+                        </div>
+                        <div class="panel-body">
+                            <p>30-day free trial</p>
+                            <p>Full Feature</p>
+                            <p>No Adds</p>
+                            <p>No Credit Card Needed</p>
+                            <a class="btn btn-lg btn-success " href="#" role="button">Sing Up</a>
+                        </div>
+                    </div>
+                </div> <!-- /col -->
+                <div class="col-sm-3">
+                    <div class="panel panel-default text-center panel-pricing">
+                        <div class="panel-heading">
+                            <p>$<span class="amount">2</span>/month</p>
+                            <p>Monthly</p>
+                        </div>
+                        <div class="panel-body text-center">
+                            <p>Simple low monthly price</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <a class="btn btn-lg btn-success" href="#" role="button">Buy Now</a>
+                        </div>
+                    </div>
+                </div> <!-- /col -->
+                <div class="col-sm-3">
+                    <div class="panel panel-success text-center panel-pricing">
+                        <div class="panel-heading text-center">
+                            <p>$<span class="amount">15</span>/year</p>
+                            <p>Yearly</p>
+                        </div>
+                        <div class="panel-body">
+                            <p>Pay for a year and save!</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <a class="btn btn-lg btn-success" href="#" role="button">Buy Now</a>
+                        </div>
+                    </div>
+                </div> <!-- /col -->
+            </div> <!-- /row -->
+        </div> <!-- /col -->
+    </div> <!-- /row -->
 {% endblock %}

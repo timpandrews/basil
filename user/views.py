@@ -1,12 +1,12 @@
 from basil import app
 from flask import render_template, redirect
-from user.forms import RegisterForm
+from user.forms import SignupForm
 
 @app.route('/login')
 def login():
-    return 'Hello User!'
+    return render_template('user/login.html')
 
-@app.route('/register', methods=('GET','POST'))
-def register():
-    form = RegisterForm()
-    return render_template('author/register.html', form=form)
+@app.route('/signup', methods=('GET','POST'))
+def signup():
+    form = SignupForm()
+    return render_template('user/signup.html', form=form)
