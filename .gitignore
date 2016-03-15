@@ -1,4 +1,5 @@
-blogVenv/
+basilVenv/*
+*.pyc
 
 # IntelliJ project files
 .idea
