@@ -8,6 +8,7 @@ itsdangerous==0.24
 Jinja2==2.8
 Mako==1.0.4
 MarkupSafe==0.23
+py-bcrypt==0.4
 PyMySQL==0.7.2
 python-editor==0.5
 SQLAlchemy==1.0.12

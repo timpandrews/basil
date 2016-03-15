@@ -1,6 +1,7 @@
 from basil import app
 from flask import render_template, redirect
 from user.forms import SignupForm
+from user.models import User
 
 @app.route('/login')
 def login():
