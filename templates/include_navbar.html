@@ -17,13 +17,13 @@
                 <li><a href="#">Plant Diary</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <!--{ % if request.user.is_authenticated %}
-                    <li class="welcomeUser">Welcome { { user }}</li>
-                    <li><a href="">Logout</a></li>-->
-                <!--{ % else %}-->
+                {% if session['username'] %}
+                    <li class="welcomeUser">Welcome {{ session['username'] }}</li>
+                    <li><a href="">Logout</a></li>
+                {% else %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                <!--{ % endif %}-->
+                {% endif %}
             </ul>
         </div><!--/.nav-collapse -->
 

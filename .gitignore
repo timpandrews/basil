@@ -1,8 +1,5 @@
-basilVenv/*
-*.pyc
 
-# IntelliJ project files
 .idea
 *.iml
-out
-gen
+/basilVenv
+*.pyc
