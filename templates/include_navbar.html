@@ -19,7 +19,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if session['username'] %}
                     <li class="welcomeUser">Welcome {{ session['username'] }}</li>
-                    <li><a href="">Logout</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('signup') }}">Sign Up</a></li>

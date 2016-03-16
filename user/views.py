@@ -66,4 +66,9 @@ def welcome():
 @app.route('/login_success')
 # @login_required
 def login_success():
-    return 'Welcome %s' % session['username']
+    return render_template('user/login_success.html', username=session['username'])
+
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    return redirect(url_for('index'))

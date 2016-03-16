@@ -6,6 +6,5 @@ from user.decorators import login_required
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
     return render_template('home.html')
