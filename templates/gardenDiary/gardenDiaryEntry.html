@@ -3,10 +3,23 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-3 center">
+
+        <div class="col-sm-6 col-sm-offset-3">
 
             <h1>Garden Diary -- Add New Entry</h1>
 
+            {% from "_formhelpers.html" import render_field %}
+
+            <form method="POST" action="{{ url_for('gardenDiaryEntry') }}" role="form">
+
+                {{ form.hidden_tag() }}
+
+                {{ render_field(form.title, class='form-control') }}
+                {{ render_field(form.body, class='form-control', rows=10) }}
+
+                <button type="submit" class="btn btn-success">Add New Entry <i class="fa fa-leaf"></i></button>
+
+            </form>
 
         </div>
     </div>

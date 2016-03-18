@@ -7,6 +7,15 @@
 
             <h1>Garden Diary -- Dashboard</h1>
 
+            <div class="diary-list">
+                {% for diaryEntry in diary %}
+                    <h4><a href="#">{{ diaryEntry.title }}</a></h4>
+                    <p>{{ diaryEntry.body }}</p>
+
+                {% endfor %}
+            </div>
+
+
             <a href="{{ url_for('gardenDiaryEntry') }}" class="btn btn-success">New Diary Entry <i class="fa fa-leaf"></i></a>
 
         </div>
