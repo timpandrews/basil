@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, session, request
 from user.forms import SignupForm, LoginForm
 from user.models import User
 from user.decorators import login_required
+import datetime
 
 @app.route('/login', methods=('GET','POST'))
 def login():
@@ -33,7 +34,7 @@ def login():
 
         else: # bad username or password
             error = "Incorrect username and/or password"
-
+            app.logger.warning('%s: Incorrect username and/or password: username:%s password:%s', datetime.datetime.utcnow(), form.username.data, form.password.data)
 
     return render_template('user/login.html', form=form, error=error)
 
