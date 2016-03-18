@@ -8,3 +8,13 @@ from user.decorators import login_required
 @app.route('/index')
 def index():
     return render_template('home.html')
+
+@app.route('/dashboard') #aka Garden Diary
+@login_required
+def dashboard():
+    return render_template('gardenDiary/dashboard.html')
+
+@app.route('/gardenDiaryEntry') # Add New &?? Edit??
+@login_required
+def gardenDiaryEntry():
+    return render_template('gardenDiary/gardenDiaryEntry.html')

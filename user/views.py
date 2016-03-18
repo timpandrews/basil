@@ -30,11 +30,12 @@ def login():
                 session.pop('next')
                 return redirect(next)
             else: # otherwise send to login_success page
+                app.logger.info('%s: Successful login for: %s', datetime.datetime.utcnow(), form.username.data)
                 return redirect(url_for('login_success'))
 
         else: # bad username or password
             error = "Incorrect username and/or password"
-            app.logger.warning('%s: Incorrect username and/or password: username:%s password:%s', datetime.datetime.utcnow(), form.username.data, form.password.data)
+            app.logger.warning('%s: Incorrect username and/or password: username:%s ', datetime.datetime.utcnow(), form.username.data)
 
     return render_template('user/login.html', form=form, error=error)
 
@@ -43,12 +44,6 @@ def signup():
     form = SignupForm()
     error = ""
     if form.validate_on_submit():
-        # qry = """INSERT INTO user(fullname, email, username, password)
-        #           VALUE (%s, %s, %s, %s)"""
-        # print qry
-        # cursor = sql.connect()
-        # cursor.execute(qry, [form.fullname.data, form.fullname.data, form.username.data, form.password.data])
-        # cursor.close
 
         newUser = User(
             form.fullname.data,
@@ -63,6 +58,8 @@ def signup():
         # print "Trigger ID: ", newUser.id
 
         db.session.commit()
+        app.logger.info('%s: New User Signup:%s ', datetime.datetime.utcnow(), form.username.data)
+
 
         return redirect(url_for('welcome'))
     return render_template('user/signup.html', form=form, username=form.username.data)
@@ -80,6 +77,7 @@ def login_success():
 
 @app.route('/logout')
 def logout():
+    app.logger.info('%s: User Logged Out: %s', datetime.datetime.utcnow(), session.get('username'))
     session.pop('username')
     session.pop('userID')
     return redirect(url_for('index'))

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 center">
+
+            <h1>Garden Diary -- Dashboard</h1>
+
+            <a href="{{ url_for('gardenDiaryEntry') }}" class="btn btn-success">New Diary Entry <i class="fa fa-leaf"></i></a>
+
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -14,7 +14,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#features">Features</a></li>
                 <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#">Plant Diary</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Garden Diary</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if session['username'] %}
