@@ -1,4 +1,4 @@
-from basil import app, sql
+from basil import app, sql, db
 from flask import render_template, redirect, url_for, session, request
 from user.forms import SignupForm, LoginForm
 from user.models import User
@@ -42,12 +42,26 @@ def signup():
     form = SignupForm()
     error = ""
     if form.validate_on_submit():
-        qry = """INSERT INTO user(fullname, email, username, password)
-                  VALUE (%s, %s, %s, %s)"""
+        # qry = """INSERT INTO user(fullname, email, username, password)
+        #           VALUE (%s, %s, %s, %s)"""
         # print qry
-        cursor = sql.connect()
-        cursor.execute(qry, [form.fullname.data, form.fullname.data, form.username.data, form.password.data])
-        cursor.close
+        # cursor = sql.connect()
+        # cursor.execute(qry, [form.fullname.data, form.fullname.data, form.username.data, form.password.data])
+        # cursor.close
+
+        newUser = User(
+            form.fullname.data,
+            form.email.data,
+            form.username.data,
+            form.password.data
+            )
+        db.session.add(newUser)
+
+        # Similar to triggers.  Runs all actions in session.  Builds new records & can return new id fields, but data is temporary until commit()
+        # db.session.flush()
+        # print "Trigger ID: ", newUser.id
+
+        db.session.commit()
 
         return redirect(url_for('welcome'))
     return render_template('user/signup.html', form=form, username=form.username.data)
