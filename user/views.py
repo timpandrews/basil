@@ -14,19 +14,14 @@ def login():
         session['next'] = request.args.get('next', None)
 
     if form.validate_on_submit():
-        # SQLAlchemy ORM
         user = User.query.filter_by(
             username=form.username.data,
             password=form.password.data
-            ).limit(1)
-        if user.count(): #if count > 0
+            ).first()
+
+        if user: # if user is found
             session['username'] = form.username.data
-            # SQLAlchemy SQL populate userID Session
-            qry = """SELECT id FROM user WHERE username = %s AND password = %s"""
-            cursor = sql.connect()
-            rp = cursor.execute(qry, [form.username.data, form.password.data])
-            session['userID'] = rp.fetchone()[0]
-            cursor.close()
+            session['userID'] = user.id
 
             # if they were redirect to login then send to original requested url
             if 'next' in session:
@@ -71,4 +66,5 @@ def login_success():
 @app.route('/logout')
 def logout():
     session.pop('username')
+    session.pop('userID')
     return redirect(url_for('index'))
