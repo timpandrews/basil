@@ -33,6 +33,25 @@ def gardenDiaryEntry():
         db.session.commit()
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
 
-        return "Woo hoo!"
+        diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
+        return render_template('gardenDiary/dashboard.html', diary=diary)
 
     return render_template('gardenDiary/gardenDiaryEntry.html', form=form, action="new")
+
+@app.route('/gardenDiaryEntryDetail/<int:diary_id>')
+@login_required
+def gardenDiaryEntryDetail(diary_id):
+    entry = Diary.query.filter_by(id=diary_id).first_or_404()
+    return render_template('gardenDiary/gardenDiaryEntryDetail.html', entry=entry)
+
+@app.route('/delete/<int:diary_id>')
+@login_required
+def delete(diary_id):
+    entry = Diary.query.filter_by(id=diary_id).first_or_404()
+    entry.active = False
+    db.session.commit()
+    app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
+    # flash("entry deleted")
+
+    diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
+    return render_template('gardenDiary/dashboard.html', diary=diary)

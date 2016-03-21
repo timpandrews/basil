@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <h3>{{ entry.title }}</h3>
+            <p>{{ entry.body }}</p>
+
+            {% if session.get('userID') %}
+                <a href="#"><i class="fa fa-pencil fa-lg"></i></a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="{{ url_for('delete', diary_id=entry.id) }}"><i class="fa fa-trash fa-lg"></i></a>
+                <br><br>
+            {% endif %}
+
+            <a href="{{ url_for('dashboard') }}"><i class="fa fa-chevron-left"></i> back to dashboard</a>
+
+            <hr/>
+
+        </div>
+
+    </div>
+
+{% endblock %}
