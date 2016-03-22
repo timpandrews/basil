@@ -19,9 +19,9 @@ def dashboard():
     diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
-@app.route('/gardenDiaryEntry', methods=('GET', 'POST')) # Add New
+@app.route('/entry', methods=('GET', 'POST')) # Add New
 @login_required
-def gardenDiaryEntry():
+def entry():
     form = DiaryForm()
 
     if form.validate_on_submit():
@@ -36,13 +36,13 @@ def gardenDiaryEntry():
         diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
         return render_template('gardenDiary/dashboard.html', diary=diary)
 
-    return render_template('gardenDiary/gardenDiaryEntry.html', form=form, action="new")
+    return render_template('gardenDiary/entry.html', form=form, action="new")
 
-@app.route('/gardenDiaryEntryDetail/<int:diary_id>')
+@app.route('/entryDetail/<int:diary_id>')
 @login_required
-def gardenDiaryEntryDetail(diary_id):
+def entryDetail(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
-    return render_template('gardenDiary/gardenDiaryEntryDetail.html', entry=entry)
+    return render_template('gardenDiary/entryDetail.html', entry=entry)
 
 @app.route('/delete/<int:diary_id>')
 @login_required
@@ -65,5 +65,5 @@ def edit(diary_id):
     if form.validate_on_submit():
         form.populate_obj(entry) # replaced entry with new data from form.
         db.session.commit()
-        return redirect(url_for('gardenDiaryEntryDetail', diary_id=diary_id))
-    return render_template('gardenDiary/gardenDiaryEntry.html', form=form, entry=entry, action="edit")
+        return redirect(url_for('entryDetail', diary_id=diary_id))
+    return render_template('gardenDiary/entry.html', form=form, entry=entry, action="edit")

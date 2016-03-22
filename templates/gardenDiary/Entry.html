@@ -14,7 +14,7 @@
             {% from "_formhelpers.html" import render_field %}
 
             {% if action == "new" %}
-                <form method="POST" action="{{ url_for('gardenDiaryEntry') }}" role="form">
+                <form method="POST" action="{{ url_for('entry') }}" role="form">
             {% else %}
                 <form method="POST" action="{{ url_for('edit', diary_id=entry.id) }}" role="form">
             {% endif %}
