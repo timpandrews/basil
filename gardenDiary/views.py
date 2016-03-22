@@ -1,4 +1,4 @@
-from basil import app, db
+from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash
 from gardenDiary.forms import DiaryForm
 from gardenDiary.models import Diary
@@ -14,9 +14,13 @@ def index():
     return render_template('home.html')
 
 @app.route('/dashboard') #aka Garden Diary
+@app.route('/dashboard/<int:page>')
 @login_required
-def dashboard():
-    diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
+def dashboard(page=1):
+    diary = Diary.query.filter_by(active=True)\
+        .filter_by(user_id=session['userID'])\
+        .order_by(Diary.publish_date.desc())\
+        .paginate(page, POSTS_PER_PAGE, False)
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/entry', methods=('GET', 'POST')) # Add New
@@ -25,16 +29,24 @@ def entry():
     form = DiaryForm()
 
     if form.validate_on_submit():
+        badge = request.files.get('badge')
+        filename = None
+        try:
+            filename = uploaded_images.save(badge)
+        except:
+            flash("The image was not uploaded")
         user = User.query.filter_by(id=session['userID']).first()
         title = form.title.data
         body = form.body.data
-        diaryEntry = Diary(user, title, body)
+        diaryEntry = Diary(user, title, body, filename)
         db.session.add(diaryEntry)
         db.session.commit()
         flash("New Diary Entry Saved!")
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
-
-        diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
+        diary = Diary.query.filter_by(active=True)\
+            .filter_by(user_id=session['userID'])\
+            .order_by(Diary.publish_date.desc())\
+            .paginate(1, POSTS_PER_PAGE, False)
         return render_template('gardenDiary/dashboard.html', diary=diary)
 
     return render_template('gardenDiary/entry.html', form=form, action="new")
@@ -53,19 +65,39 @@ def delete(diary_id):
     db.session.commit()
     flash("Diary Entry Deleted")
     app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
-    # flash("entry deleted")
 
-    diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
+    diary = Diary.query.filter_by(active=True)\
+        .filter_by(user_id=session['userID'])\
+        .order_by(Diary.publish_date.desc())\
+        .paginate(1, POSTS_PER_PAGE, False)
+    print diary
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
 @login_required
 def edit(diary_id):
-    print diary_id
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     form = DiaryForm(obj=entry)
     if form.validate_on_submit():
+        original_badge = entry.badge
         form.populate_obj(entry) # replaced entry with new data from form.
+        print "original_badge: ", original_badge
+        print "entry.badge: ", entry.badge
+        print "form.badge: ", form.badge
+        print "form: ", form.title, form.body, form.badge
+        print "form.image.has_file(): ", form.badge.has_file()
+        if form.badge.has_file():
+            badge = request.files.get('badge')
+            print "badge: ", badge
+            try:
+                filename = uploaded_images.save(badge)
+            except:
+                flash("The image was not uploaded")
+            if filename:
+                entry.badge = filename
+        else:
+            entry.badge = original_badge
+
         db.session.commit()
         flash("Diary Entry Updated!")
         app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))

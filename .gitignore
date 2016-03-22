@@ -1,8 +1,14 @@
 
 .idea
 *.iml
-/basilVenv
+
 .pyc
 *.pyc
 
 *.log
+
+/basilVenv
+basilVenv
+basilVenv/
+basilVenv/*
+

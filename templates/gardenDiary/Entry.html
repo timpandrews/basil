@@ -16,13 +16,20 @@
             {% from "_formHelpers.html" import render_field %}
 
             {% if action == "new" %}
-                <form method="POST" action="{{ url_for('entry') }}" role="form">
+                <form method="POST" action="{{ url_for('entry') }}" enctype="multipart/form-data" role="form">
             {% else %}
                 <form method="POST" action="{{ url_for('edit', diary_id=entry.id) }}" role="form">
             {% endif %}
 
                 {{ form.hidden_tag() }}
 
+
+                {% if entry and entry.badge %}
+                    <img src="{{ entry.imgsrc }}" height="80px" class="img-rounded" />
+                {% endif %}
+
+
+                {{ render_field(form.badge, class='form-control') }}
                 {{ render_field(form.title, class='form-control') }}
                 {{ render_field(form.body, class='form-control', rows=10) }}
 

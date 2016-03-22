@@ -1,4 +1,4 @@
-from basil import db
+from basil import db, uploaded_images
 from datetime import datetime
 
 class Diary(db.Model):
@@ -6,14 +6,20 @@ class Diary(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String(80))
     body = db.Column(db.Text)
+    badge = db.Column(db.String(256))
     publish_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
 
-    def __init__(self, user, title, body, publish_date=None, update_date=None, active=True):
+    @property
+    def imgsrc(self):
+        return uploaded_images.url(self.badge)
+
+    def __init__(self, user, title, body, badge=None, publish_date=None, update_date=None, active=True):
         self.user_id = user.id
         self.title = title
         self.body = body
+        self.badge = badge
         if publish_date is None:
             self.publish_date = datetime.utcnow()
         else:

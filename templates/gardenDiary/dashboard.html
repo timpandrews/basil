@@ -10,13 +10,41 @@
             {% include '_flashMessages.html' %}
 
             <div class="diary-list">
-                {% for diaryEntry in diary %}
-                    <h4><a href="{{ url_for('entryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
-                    <p>{{ diaryEntry.body }}</p>
-                    <p>id: {{ diaryEntry.id }}</p>
+                {% for diaryEntry in diary.items %}
+                    <div class="row diary-entry">
+                        <div class="col-md-3">
+                            {% if diaryEntry.badge %}
+                                <img src="{{ diaryEntry.imgsrc }}" height="60px" class="img-rounded">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h4><a href="{{ url_for('entryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
+                            <p>{{ diaryEntry.body }}</p>
+                            <p>id: {{ diaryEntry.id }}</p>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 
+            <div class="paginate">
+                {% if diary.has_prev %}
+                    <a href="{{ url_for('dashboard', page=diary.prev_num) }}">
+                        <i class="fa fa-arrow-left"></i>Newer
+                    </a>
+                {% else %}
+                    <i class="fa fa-arrow-left"></i>Newer
+                {% endif %}
+                |
+                {% if diary.has_next %}
+                    <a href="{{ url_for('dashboard', page=diary.next_num) }}">
+                        Older<i class="fa fa-arrow-right"></i>
+                    </a>
+                {% else %}
+                    Older<i class="fa fa-arrow-right"></i>
+                {% endif %}
+            </div>
+
+            <br/><br/>
 
             <a href="{{ url_for('entry') }}" class="btn btn-success">New Diary Entry <i class="fa fa-leaf"></i></a>
 
