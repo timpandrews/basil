@@ -81,11 +81,8 @@ def edit(diary_id):
     if form.validate_on_submit():
         original_badge = entry.badge
         form.populate_obj(entry) # replaced entry with new data from form.
-        print "original_badge: ", original_badge
         print "entry.badge: ", entry.badge
-        print "form.badge: ", form.badge
-        print "form: ", form.title, form.body, form.badge
-        print "form.image.has_file(): ", form.badge.has_file()
+        print "form.badge.has_file(): ", form.badge.has_file()
         if form.badge.has_file():
             badge = request.files.get('badge')
             print "badge: ", badge

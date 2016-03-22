@@ -18,7 +18,7 @@
             {% if action == "new" %}
                 <form method="POST" action="{{ url_for('entry') }}" enctype="multipart/form-data" role="form">
             {% else %}
-                <form method="POST" action="{{ url_for('edit', diary_id=entry.id) }}" role="form">
+                <form method="POST" action="{{ url_for('edit', diary_id=entry.id) }}" enctype="multipart/form-data" role="form">
             {% endif %}
 
                 {{ form.hidden_tag() }}
