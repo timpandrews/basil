@@ -1,5 +1,5 @@
 from basil import app, db
-from flask import render_template, redirect, url_for, session, request
+from flask import render_template, redirect, url_for, session, request, flash
 from gardenDiary.forms import DiaryForm
 from gardenDiary.models import Diary
 from user.models import User
@@ -31,6 +31,7 @@ def entry():
         diaryEntry = Diary(user, title, body)
         db.session.add(diaryEntry)
         db.session.commit()
+        flash("New Diary Entry Saved!")
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
 
         diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
@@ -50,6 +51,7 @@ def delete(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     entry.active = False
     db.session.commit()
+    flash("Diary Entry Deleted")
     app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
     # flash("entry deleted")
 
@@ -65,5 +67,7 @@ def edit(diary_id):
     if form.validate_on_submit():
         form.populate_obj(entry) # replaced entry with new data from form.
         db.session.commit()
+        flash("Diary Entry Updated!")
+        app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
         return redirect(url_for('entryDetail', diary_id=diary_id))
     return render_template('gardenDiary/entry.html', form=form, entry=entry, action="edit")

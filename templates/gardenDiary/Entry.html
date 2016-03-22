@@ -11,6 +11,8 @@
                 <h1>Garden Diary -- Edit Entry</h1>
             {% endif %}
 
+            {% include '_flashMessages.html' %}
+
             {% from "_formHelpers.html" import render_field %}
 
             {% if action == "new" %}
