@@ -1,0 +1,11 @@
+
+.Python
+basilVenv/
+
+*.log
+
+*.iml
+.idea/
+.idea/workspace.xml
+
+*.pyc
