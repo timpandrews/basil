@@ -12,7 +12,7 @@ sql = create_engine(app.config['DB_URI'], pool_size=20, max_overflow=0, pool_rec
 # logging
 import logging
 from logging.handlers import RotatingFileHandler
-handler = RotatingFileHandler('error.log', maxBytes=10000, backupCount=1)
+handler = RotatingFileHandler('event.log', maxBytes=10000, backupCount=1)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
 
