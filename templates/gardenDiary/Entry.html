@@ -11,7 +11,7 @@
                 <h1>Garden Diary -- Edit Entry</h1>
             {% endif %}
 
-            {% from "_formhelpers.html" import render_field %}
+            {% from "_formHelpers.html" import render_field %}
 
             {% if action == "new" %}
                 <form method="POST" action="{{ url_for('entry') }}" role="form">
