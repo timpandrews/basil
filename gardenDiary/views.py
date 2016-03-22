@@ -19,7 +19,7 @@ def dashboard():
     diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
-@app.route('/gardenDiaryEntry', methods=('GET', 'POST')) # Add New &?? Edit??
+@app.route('/gardenDiaryEntry', methods=('GET', 'POST')) # Add New
 @login_required
 def gardenDiaryEntry():
     form = DiaryForm()
@@ -55,3 +55,15 @@ def delete(diary_id):
 
     diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
     return render_template('gardenDiary/dashboard.html', diary=diary)
+
+@app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
+@login_required
+def edit(diary_id):
+    print diary_id
+    entry = Diary.query.filter_by(id=diary_id).first_or_404()
+    form = DiaryForm(obj=entry)
+    if form.validate_on_submit():
+        form.populate_obj(entry) # replaced entry with new data from form.
+        db.session.commit()
+        return redirect(url_for('gardenDiaryEntryDetail', diary_id=diary_id))
+    return render_template('gardenDiary/gardenDiaryEntry.html', form=form, entry=entry, action="edit")
