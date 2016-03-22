@@ -16,7 +16,7 @@ def index():
 @app.route('/dashboard') #aka Garden Diary
 @login_required
 def dashboard():
-    diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
+    diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/entry', methods=('GET', 'POST')) # Add New
@@ -34,7 +34,7 @@ def entry():
         flash("New Diary Entry Saved!")
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
 
-        diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
+        diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
         return render_template('gardenDiary/dashboard.html', diary=diary)
 
     return render_template('gardenDiary/entry.html', form=form, action="new")
@@ -55,7 +55,7 @@ def delete(diary_id):
     app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
     # flash("entry deleted")
 
-    diary = Diary.query.filter_by(active=True).order_by(Diary.publish_date.desc())
+    diary = Diary.query.filter_by(active=True).filter_by(user_id=session['userID']).order_by(Diary.publish_date.desc())
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
