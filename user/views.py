@@ -2,6 +2,7 @@ from basil import app, sql, db
 from flask import render_template, redirect, url_for, session, request
 from user.forms import SignupForm, LoginForm
 from user.models import User
+from gardenDiary.models import Diary
 from user.decorators import login_required
 import datetime
 
@@ -31,7 +32,12 @@ def login():
                 return redirect(next)
             else: # otherwise send to login_success page
                 app.logger.info('%s: Successful login for: %s', datetime.datetime.utcnow(), form.username.data)
-                return redirect(url_for('login_success'))
+
+                diary = Diary.query.filter_by(active=True)\
+                    .filter_by(user_id=session['userID'])\
+                    .order_by(Diary.publish_date.desc())\
+                    .paginate(1, app.config['POSTS_PER_PAGE'], False)
+                return render_template('gardenDiary/dashboard.html', diary=diary)
 
         else: # bad username or password
             error = "Incorrect username and/or password"

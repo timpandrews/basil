@@ -20,7 +20,7 @@ def dashboard(page=1):
     diary = Diary.query.filter_by(active=True)\
         .filter_by(user_id=session['userID'])\
         .order_by(Diary.publish_date.desc())\
-        .paginate(page, POSTS_PER_PAGE, False)
+        .paginate(page, app.config['POSTS_PER_PAGE'], False)
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/entry', methods=('GET', 'POST')) # Add New
@@ -46,7 +46,7 @@ def entry():
         diary = Diary.query.filter_by(active=True)\
             .filter_by(user_id=session['userID'])\
             .order_by(Diary.publish_date.desc())\
-            .paginate(1, POSTS_PER_PAGE, False)
+            .paginate(1, app.config['POSTS_PER_PAGE'], False)
         return render_template('gardenDiary/dashboard.html', diary=diary)
 
     return render_template('gardenDiary/entry.html', form=form, action="new")
@@ -69,7 +69,7 @@ def delete(diary_id):
     diary = Diary.query.filter_by(active=True)\
         .filter_by(user_id=session['userID'])\
         .order_by(Diary.publish_date.desc())\
-        .paginate(1, POSTS_PER_PAGE, False)
+        .paginate(1, app.config['POSTS_PER_PAGE'], False)
     print diary
     return render_template('gardenDiary/dashboard.html', diary=diary)
 

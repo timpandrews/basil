@@ -9,3 +9,4 @@ basilVenv/
 .idea/workspace.xml
 
 *.pyc
+/static/usrMedia
