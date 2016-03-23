@@ -75,12 +75,6 @@ def signup():
 def welcome():
     return render_template('user/welcome.html')
 
-
-@app.route('/login_success')
-# @login_required
-def login_success():
-    return render_template('user/login_success.html', username=session['username'])
-
 @app.route('/logout')
 def logout():
     app.logger.info('%s: User Logged Out: %s', datetime.datetime.utcnow(), session.get('username'))

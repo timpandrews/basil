@@ -18,9 +18,10 @@
                             {% endif %}
                         </div>
                         <div class="col-md-9">
+                            {{ diaryEntry.publish_date.strftime('%Y-%m-%d') }}
                             <h4><a href="{{ url_for('entryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
+
                             <p>{{ diaryEntry.body }}</p>
-                            <p>id: {{ diaryEntry.id }}</p>
                         </div>
                     </div>
                 {% endfor %}
