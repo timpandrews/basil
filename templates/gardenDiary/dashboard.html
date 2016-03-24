@@ -13,6 +13,7 @@
                 {% for diaryEntry in diary.items %}
                     <div class="row diary-entry">
                         <div class="col-md-3">
+                            <br>
                             {% if diaryEntry.badge %}
                                 <img src="{{ diaryEntry.imgsrc }}" height="60px" class="img-rounded">
                             {% endif %}
@@ -20,7 +21,7 @@
                         <div class="col-md-9">
                             {{ diaryEntry.publish_date.strftime('%Y-%m-%d') }}
                             <h4><a href="{{ url_for('entryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
-
+                            <p>{{ diaryEntry.diaryUser.fullname }}</p>
                             <p>{{ diaryEntry.body }}</p>
                         </div>
                     </div>

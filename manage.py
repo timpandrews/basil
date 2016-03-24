@@ -10,6 +10,7 @@ manager = Manager(app)
 # Migrate
 manager.add_command('db', MigrateCommand)
 
+# Runserver
 manager.add_command("runserver", Server(
     use_debugger=True,
     use_reloader=True,

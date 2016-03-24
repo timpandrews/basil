@@ -41,3 +41,4 @@ configure_uploads(app, uploaded_images)
 
 from gardenDiary import views
 from user import views
+from sandbox import views
