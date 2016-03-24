@@ -10,3 +10,5 @@ basilVenv/
 
 *.pyc
 /static/usrMedia
+
+*.1

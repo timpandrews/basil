@@ -10,6 +10,7 @@ class Diary(db.Model):
     publish_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
+    diaryUser = db.relationship('User', backref='diary', lazy='joined', uselist=False)
 
     @property
     def imgsrc(self):
