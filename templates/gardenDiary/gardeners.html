@@ -20,9 +20,9 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Suggested Gardeners to Follow</h3>
-                    ...<br/>
-                    ...<br/>
-                    ...<br/>
+                    {% for gardener in suggestedGardeners %}
+                        {{ gardener.fullname }}<br/>
+                    {% endfor %}
                 </div>
             </div>
 

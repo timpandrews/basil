@@ -104,4 +104,5 @@ def edit(diary_id):
 @login_required
 def gardeners():
     following = Following.query.filter_by(user_id=session['userID']).all()
-    return render_template('gardenDiary/gardeners.html', following=following)
+    suggestedGardeners = User.query.filter_by(active=True).all()
+    return render_template('gardenDiary/gardeners.html', following=following, suggestedGardeners=suggestedGardeners)

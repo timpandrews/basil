@@ -6,12 +6,14 @@ class User(db.Model):
     email = db.Column(db.String(35)) # email = db.Column(db.String(35), unique=True)
     username = db.Column(db.String(80)) # username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(60))
+    active = db.Column(db.Boolean)
 
-    def __init__(self, fullname, email, username, password):
+    def __init__(self, fullname, email, username, password, active=True):
         self.fullname = fullname
         self.email = email
         self.username = username
         self.password = password
+        self.active = active
 
     def __repr__(self):
         return '<User %r>' % self.username
