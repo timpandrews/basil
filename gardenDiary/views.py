@@ -105,4 +105,15 @@ def edit(diary_id):
 def gardeners():
     following = Following.query.filter_by(user_id=session['userID']).all()
     suggestedGardeners = User.query.filter(User.id != session['userID']).all()
-    return render_template('gardenDiary/gardeners.html', following=following, suggestedGardeners=suggestedGardeners)
+
+    # Build isFollowingList -Checks suggestedGarderns List against following list
+    # to find matches creats ordered list of restuls
+    isFollowingList = []
+    for gardeners in suggestedGardeners:
+        isFollowing = False
+        for followed in following:
+            if gardeners.id == followed.following_id:
+                isFollowing = True
+        isFollowingList.append(isFollowing)
+
+    return render_template('gardenDiary/gardeners.html', following=following, suggestedGardeners=suggestedGardeners, isFollowingList=isFollowingList)

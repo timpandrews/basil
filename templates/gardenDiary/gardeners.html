@@ -18,8 +18,17 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Suggested Gardeners to Follow</h3>
+                    {% set x = 0 %}
                     {% for gardener in suggestedGardeners %}
-                        {{ gardener.id }}: {{ gardener.fullname }} - {{ gardener.username }}<br/>
+                        <p>
+                            {{ gardener.id }}: {{ gardener.fullname }} - {{ gardener.username }} -
+                            {% if isFollowingList[x] %}
+                                Following
+                            {% else %}
+                                Not Following
+                            {% endif %}
+                        </p>
+                        {% set x = x + 1 %}
                     {% endfor %}
                 </div>
             </div>
