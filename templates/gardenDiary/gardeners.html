@@ -10,18 +10,16 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>You are following {{ following|length }} gardeners</h3>
-                    (
                     {% for gardener in following %}
-                        {{ gardener.followingUser.fullname }},
+                        ({{ gardener.followingUser.id }}){{ gardener.followingUser.fullname }},
                     {% endfor %}
-                    )
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Suggested Gardeners to Follow</h3>
                     {% for gardener in suggestedGardeners %}
-                        {{ gardener.fullname }}<br/>
+                        {{ gardener.id }}: {{ gardener.fullname }} - {{ gardener.username }}<br/>
                     {% endfor %}
                 </div>
             </div>
