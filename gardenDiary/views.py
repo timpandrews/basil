@@ -2,11 +2,10 @@ from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash
 from gardenDiary.forms import DiaryForm
 from gardenDiary.models import Diary
-from user.models import User
+from user.models import User, Following
 from user.decorators import login_required
 import datetime
 
-POSTS_PER_PAGE = 5
 
 @app.route('/')
 @app.route('/index')
@@ -100,3 +99,9 @@ def edit(diary_id):
         app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
         return redirect(url_for('entryDetail', diary_id=diary_id))
     return render_template('gardenDiary/entry.html', form=form, entry=entry, action="edit")
+
+@app.route('/gardeners')
+@login_required
+def gardeners():
+    following = Following.query.filter_by(user_id=session['userID']).all()
+    return render_template('gardenDiary/gardeners.html', following=following)

@@ -16,3 +16,8 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Following(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    following_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    followingUser = db.relationship('User', foreign_keys=[following_id], backref='Following', lazy='joined', uselist=False)
