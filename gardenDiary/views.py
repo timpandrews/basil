@@ -129,8 +129,8 @@ def toggleFollowing():
     removeFollow.active = False
     db.session.commit()
 
-    test = 'success'
-    return jsonify(test=test)
+    returnValue = 'success'
+    return jsonify(returnValue=returnValue)
 
 # Currently not following change to following
 @app.route('/toggleNotFollowing')
@@ -143,5 +143,5 @@ def toggleNotFollowing():
     db.session.add(newFollow)
     db.session.commit()
 
-    test = 'success'
-    return jsonify(test=test)
+    returnValue = 'success'
+    return jsonify(returnValue=returnValue)

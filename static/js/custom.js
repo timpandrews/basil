@@ -26,7 +26,7 @@ $('.btnFollowing').on('click', function() {
     $.getJSON('/toggleFollowing', {
         id: this.id },
         function(results) {
-            alert(results.test);
+            alert(results.returnValue);
         }
     );
 });
@@ -36,7 +36,7 @@ $('.btnNotFollowing').on('click', function() {
     $.getJSON('/toggleNotFollowing', {
         id: this.id },
         function(results) {
-            alert(results.test);
+            alert(results.returnValue);
         }
     );
 });
