@@ -20,7 +20,7 @@ $('.btnFollowing').hover(
     }
 );
 
-//UnFollow
+// toggleFollowing & toggleNotFollowing
 $('.btnFollowing').on('click', function() {
     //alert(this.id);
     $.getJSON('/toggleFollowing', {
@@ -29,4 +29,14 @@ $('.btnFollowing').on('click', function() {
             alert(results.test);
         }
     );
-})
+});
+
+$('.btnNotFollowing').on('click', function() {
+    //alert(this.id);
+    $.getJSON('/toggleNotFollowing', {
+        id: this.id },
+        function(results) {
+            alert(results.test);
+        }
+    );
+});

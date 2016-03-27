@@ -125,3 +125,11 @@ def toggleFollowing():
     print gardenerID
     test = 'success'
     return jsonify(test=test)
+
+@app.route('/toggleNotFollowing')
+def toggleNotFollowing():
+    gardenerID = request.args.get('id')
+    gardenerID = gardenerID.split("_",1)[1] # Strip of prefix & return just id:int
+    print gardenerID
+    test = 'success'
+    return jsonify(test=test)
