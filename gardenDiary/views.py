@@ -1,5 +1,5 @@
 from basil import app, db, uploaded_images
-from flask import render_template, redirect, url_for, session, request, flash
+from flask import render_template, redirect, url_for, session, request, flash, jsonify
 from gardenDiary.forms import DiaryForm
 from gardenDiary.models import Diary
 from user.models import User, Following
@@ -103,8 +103,8 @@ def edit(diary_id):
 @app.route('/gardeners')
 @login_required
 def gardeners():
-    following = Following.query.filter_by(user_id=session['userID']).all()
-    suggestedGardeners = User.query.filter(User.id != session['userID']).all()
+    following = Following.query.filter_by(active=True).filter_by(user_id=session['userID']).all()
+    suggestedGardeners = User.query.filter_by(active=True).filter(User.id != session['userID']).all()
 
     # Build isFollowingList -Checks suggestedGarderns List against following list
     # to find matches creats ordered list of restuls
@@ -117,3 +117,42 @@ def gardeners():
         isFollowingList.append(isFollowing)
 
     return render_template('gardenDiary/gardeners.html', following=following, suggestedGardeners=suggestedGardeners, isFollowingList=isFollowingList)
+
+# Currently following change to not following
+@app.route('/toggleFollowing')
+def toggleFollowing():
+    button_id = request.args.get('id')
+    gardener_id = button_id.split("_",1)[1] # Strip of prefix & return just id:int
+
+    # set active=false for record from tbl: following
+    removeFollow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).first_or_404()
+    removeFollow.active = False
+    db.session.commit()
+    app.logger.info('%s: Remove Following by: %s', datetime.datetime.utcnow(), session.get('username'))
+
+    return jsonify(button_id=button_id)
+
+# Currently not following change to following
+@app.route('/toggleNotFollowing')
+def toggleNotFollowing():
+    button_id = request.args.get('id')
+    gardener_id = button_id.split("_",1)[1] # Strip of prefix & return just id:int
+
+    # add or update record to tbl: following
+    if Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).count():
+        # found existing record, update existing record with active = true
+        follow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).first()
+        follow.active = True
+        db.session.commit()
+    else:
+        # no record found, add new record
+        newFollow = Following(session.get('userID'),gardener_id)
+        db.session.add(newFollow)
+        db.session.commit()
+
+    app.logger.info('%s: New Following by: %s', datetime.datetime.utcnow(), session.get('username'))
+
+
+
+
+    return jsonify(button_id=button_id)

@@ -1,4 +1,5 @@
 from basil import db
+from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,4 +23,19 @@ class Following(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     following_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    create_date = db.Column(db.DateTime)
+    active = db.Column(db.Boolean)
+
     followingUser = db.relationship('User', foreign_keys=[following_id], backref='Following', lazy='joined', uselist=False)
+
+    def __init__(self, user_id, following_id, create_date=None, active=True):
+        self.user_id = user_id
+        self.following_id = following_id
+        if create_date is None:
+            self.create_date = datetime.utcnow()
+        else:
+            self.create_date = create_date
+        self.active = active
+
+    def __repr__(self):
+        return  '<Following %r>' % self.user_id, self.followingUser
