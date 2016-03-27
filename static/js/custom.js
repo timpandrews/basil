@@ -4,7 +4,7 @@
 
 
 //Change following button to un-follow on hover
-$('.btnFollowing').hover(
+$(".btnFollowing").hover(
     function() {
         var $this = $(this); // caching $(this)
         $this.data('Following', $this.text());
@@ -23,22 +23,28 @@ $('.btnFollowing').hover(
 
 // toggleFollowing: remove following
 $('.btnFollowing').on('click', function() {
-    //alert(this.id);
+    alert(this.id);
     $.getJSON('/toggleFollowing', {
         id: this.id },
         function(results) {
-            //alert(results.returnValue);
+            alert(results.button_id);
+            //$('#' + results.button_id).removeClass('btnFollowing btn-success btn-warning ');
+            //$('#' + results.button_id).text('Follow');
+            //$('#' + results.button_id).addClass('btn-default btnNotFollowing');
         }
     );
 });
 
 // toggleNotFollowing: add following
 $('.btnNotFollowing').on('click', function() {
-    //alert(this.id);
+    alert(this.id);
     $.getJSON('/toggleNotFollowing', {
         id: this.id },
         function(results) {
-            //alert(results.returnValue);
+            alert(results.button_id);
+            //$('#' + results.button_id).text('Following');
+            //$('#' + results.button_id).removeClass('btn-default btnNotFollowing');
+            //$('#' + results.button_id).addClass('btn-success btnFollowing');
         }
     );
 });

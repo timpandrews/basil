@@ -121,29 +121,38 @@ def gardeners():
 # Currently following change to not following
 @app.route('/toggleFollowing')
 def toggleFollowing():
-    gardenerID = request.args.get('id')
-    gardenerID = gardenerID.split("_",1)[1] # Strip of prefix & return just id:int
+    button_id = request.args.get('id')
+    gardener_id = button_id.split("_",1)[1] # Strip of prefix & return just id:int
 
     # set active=false for record from tbl: following
-    removeFollow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardenerID).first_or_404()
+    removeFollow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).first_or_404()
     removeFollow.active = False
     db.session.commit()
     app.logger.info('%s: Remove Following by: %s', datetime.datetime.utcnow(), session.get('username'))
 
-    returnValue = 'success'
-    return jsonify(returnValue=returnValue)
+    return jsonify(button_id=button_id)
 
 # Currently not following change to following
 @app.route('/toggleNotFollowing')
 def toggleNotFollowing():
-    gardenerID = request.args.get('id')
-    gardenerID = gardenerID.split("_",1)[1] # Strip of prefix & return just id:int
+    button_id = request.args.get('id')
+    gardener_id = button_id.split("_",1)[1] # Strip of prefix & return just id:int
 
-    # add record to tbl: following
-    newFollow = Following(session.get('userID'),gardenerID)
-    db.session.add(newFollow)
-    db.session.commit()
+    # add or update record to tbl: following
+    if Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).count():
+        # found existing record, update existing record with active = true
+        follow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardener_id).first()
+        follow.active = True
+        db.session.commit()
+    else:
+        # no record found, add new record
+        newFollow = Following(session.get('userID'),gardener_id)
+        db.session.add(newFollow)
+        db.session.commit()
+
     app.logger.info('%s: New Following by: %s', datetime.datetime.utcnow(), session.get('username'))
 
-    returnValue = 'success'
-    return jsonify(returnValue=returnValue)
+
+
+
+    return jsonify(button_id=button_id)
