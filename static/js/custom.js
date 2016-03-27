@@ -19,3 +19,8 @@ $('.btnFollowing').hover(
         $this.addClass('btn-success')
     }
 );
+
+//UnFollow
+$("#test").on("click", function() {
+    alert("Hello")
+})
