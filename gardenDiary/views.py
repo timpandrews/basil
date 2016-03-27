@@ -128,6 +128,7 @@ def toggleFollowing():
     removeFollow = Following.query.filter_by(user_id=session.get('userID')).filter_by(following_id=gardenerID).first_or_404()
     removeFollow.active = False
     db.session.commit()
+    app.logger.info('%s: Remove Following by: %s', datetime.datetime.utcnow(), session.get('username'))
 
     returnValue = 'success'
     return jsonify(returnValue=returnValue)
@@ -142,6 +143,7 @@ def toggleNotFollowing():
     newFollow = Following(session.get('userID'),gardenerID)
     db.session.add(newFollow)
     db.session.commit()
+    app.logger.info('%s: New Following by: %s', datetime.datetime.utcnow(), session.get('username'))
 
     returnValue = 'success'
     return jsonify(returnValue=returnValue)

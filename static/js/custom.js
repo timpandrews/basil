@@ -20,23 +20,28 @@ $('.btnFollowing').hover(
     }
 );
 
-// toggleFollowing & toggleNotFollowing
+
+// toggleFollowing: remove following
 $('.btnFollowing').on('click', function() {
-    //alert(this.id);
+    alert(this.id);
     $.getJSON('/toggleFollowing', {
         id: this.id },
         function(results) {
+
             alert(results.returnValue);
         }
     );
 });
 
+// toggleNotFollowing: add following
 $('.btnNotFollowing').on('click', function() {
-    //alert(this.id);
+    alert(this.id);
     $.getJSON('/toggleNotFollowing', {
         id: this.id },
         function(results) {
+            
             alert(results.returnValue);
+
         }
     );
 });
