@@ -1,5 +1,5 @@
 from basil import app, db, uploaded_images
-from flask import render_template, redirect, url_for, session, request, flash
+from flask import render_template, redirect, url_for, session, request, flash, jsonify
 from gardenDiary.forms import DiaryForm
 from gardenDiary.models import Diary
 from user.models import User, Following
@@ -117,3 +117,9 @@ def gardeners():
         isFollowingList.append(isFollowing)
 
     return render_template('gardenDiary/gardeners.html', following=following, suggestedGardeners=suggestedGardeners, isFollowingList=isFollowingList)
+
+@app.route('/toggleFollowing')
+def toggleFollowing():
+    gardenerID = request.args.get('id')
+    test = 'success'
+    return jsonify(test=test)

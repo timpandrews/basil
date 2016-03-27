@@ -21,6 +21,12 @@ $('.btnFollowing').hover(
 );
 
 //UnFollow
-$(".btnFollowing").on("click", function() {
-    alert(this.id)
+$('.btnFollowing').on('click', function() {
+    alert(this.id);
+    $.getJSON('/toggleFollowing', {
+        id: this.id },
+        function(results) {
+            alert(results.test);
+        }
+    );
 })
