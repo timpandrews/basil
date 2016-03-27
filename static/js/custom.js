@@ -21,6 +21,6 @@ $('.btnFollowing').hover(
 );
 
 //UnFollow
-$("#test").on("click", function() {
-    alert("Hello")
+$(".btnFollowing").on("click", function() {
+    alert(this.id)
 })

@@ -23,7 +23,7 @@
                         <p>
                             {{ gardener.id }}: {{ gardener.fullname }} - {{ gardener.username }} -
                             {% if isFollowingList[x] %}
-                                <a class="btn btn-success btnFollowing" href="#" role="button">Following</a>
+                                <a id="g_{{ gardener.id }}" class="btn btn-success btnFollowing" href="#" role="button">Following</a>
                             {% else %}
                                 <a class="btn btn-default" href="#" role="button">Follow</a>
                             {% endif %}
@@ -38,6 +38,6 @@
         </div>
     </div>
 
-    
+
 {% endblock %}
 
