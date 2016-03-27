@@ -22,4 +22,13 @@ class Following(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     following_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    active = db.Column(db.Boolean)
     followingUser = db.relationship('User', foreign_keys=[following_id], backref='Following', lazy='joined', uselist=False)
+
+    def __init__(self, user_id, following_id, active=True):
+        self.user_id = user_id
+        self.following_id = following_id
+        self.active = active
+
+    def __repr__(self):
+        return  '<Following %r>' % self.user_id, self.followingUser
