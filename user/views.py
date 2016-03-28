@@ -4,9 +4,11 @@ from user.forms import SignupForm, LoginForm
 from user.models import User
 from gardenDiary.models import Diary
 from user.decorators import login_required
+from common import getDiary
 import datetime
 
 @app.route('/login', methods=('GET','POST'))
+#dahsbooard
 def login():
     form = LoginForm()
     error = None
@@ -33,10 +35,8 @@ def login():
             else: # otherwise send to login_success page
                 app.logger.info('%s: Successful login for: %s', datetime.datetime.utcnow(), form.username.data)
 
-                diary = Diary.query.filter_by(active=True)\
-                    .filter_by(user_id=session['userID'])\
-                    .order_by(Diary.publish_date.desc())\
-                    .paginate(1, app.config['POSTS_PER_PAGE'], False)
+                diary = getDiary(session['userID'],1)
+
                 return render_template('gardenDiary/dashboard.html', diary=diary)
 
         else: # bad username or password
