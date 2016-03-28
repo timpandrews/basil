@@ -6,6 +6,20 @@ from user.models import User, Following
 from user.decorators import login_required
 import datetime
 
+def getDiary(userID,page):
+
+    followingList = []
+    followingList.append(session['userID'])
+    following = Following.query.filter_by(active=True).filter_by(user_id=session['userID']).all()
+    for follower in following:
+        followingList.append(follower.following_id)
+
+    diary = Diary.query.filter_by(active=True)\
+        .filter(Diary.user_id.in_(followingList))\
+        .order_by(Diary.publish_date.desc())\
+        .paginate(page, app.config['POSTS_PER_PAGE'], False)
+
+    return diary
 
 @app.route('/')
 @app.route('/index')
@@ -15,15 +29,16 @@ def index():
 @app.route('/dashboard') #aka Garden Diary
 @app.route('/dashboard/<int:page>')
 @login_required
+#dahsbooard
 def dashboard(page=1):
-    diary = Diary.query.filter_by(active=True)\
-        .filter_by(user_id=session['userID'])\
-        .order_by(Diary.publish_date.desc())\
-        .paginate(page, app.config['POSTS_PER_PAGE'], False)
+
+    diary = getDiary(session['userID'],page)
+
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/entry', methods=('GET', 'POST')) # Add New
 @login_required
+#dashboard
 def entry():
     form = DiaryForm()
 
@@ -42,10 +57,9 @@ def entry():
         db.session.commit()
         flash("New Diary Entry Saved!")
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
-        diary = Diary.query.filter_by(active=True)\
-            .filter_by(user_id=session['userID'])\
-            .order_by(Diary.publish_date.desc())\
-            .paginate(1, app.config['POSTS_PER_PAGE'], False)
+
+        diary = getDiary(session['userID'],1)
+
         return render_template('gardenDiary/dashboard.html', diary=diary)
 
     return render_template('gardenDiary/entry.html', form=form, action="new")
@@ -58,6 +72,7 @@ def entryDetail(diary_id):
 
 @app.route('/delete/<int:diary_id>')
 @login_required
+#dashboard
 def delete(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     entry.active = False
@@ -65,11 +80,8 @@ def delete(diary_id):
     flash("Diary Entry Deleted")
     app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
 
-    diary = Diary.query.filter_by(active=True)\
-        .filter_by(user_id=session['userID'])\
-        .order_by(Diary.publish_date.desc())\
-        .paginate(1, app.config['POSTS_PER_PAGE'], False)
-    print diary
+    diary = getDiary(session['userID'],1)
+
     return render_template('gardenDiary/dashboard.html', diary=diary)
 
 @app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
