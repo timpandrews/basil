@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-sm-6 col-sm-offset-3">
+            {% if action == "new" %}
+                <h1>Reminder - Add New</h1>
+            {% else %}
+                <h1>Reminder - Edit</h1>
+            {% endif %}
+
+            {% include '_flashMessages.html' %}
+
+            {% from "_formHelpers.html" import render_field %}
+
+            {% if action == "new" %}
+                <form method="POST" action="{{ url_for('reminder') }}" enctype="multipart/form-data" role="form">
+            {% else %}
+                <form method="POST" action="{{ url_for('edit_reminder', diary_id=entry.id) }}" enctype="multipart/form-data" role="form">
+            {% endif %}
+
+                {{ form.hidden_tag() }}
+
+
+                {% if entry and entry.badge %}
+                    <img src="{{ entry.imgsrc }}" height="80px" class="img-rounded" />
+                {% endif %}
+
+
+                {{ render_field(form.badge, class='form-control') }}
+                {{ render_field(form.title, class='form-control') }}
+                {{ render_field(form.detail, class='form-control', rows=10) }}
+
+                {% if action == "new" %}
+                    <button type="submit" class="btn btn-success">Add Reminder <i class="fa fa-bell"></i></button>
+                {% else %}
+                    <button type="submit" class="btn btn-success">Update Reminder <i class="fa fa-bell"></i></button>
+                {% endif %}
+
+            </form>
+
+        </div>
+    </div>
+
+
+{% endblock %}

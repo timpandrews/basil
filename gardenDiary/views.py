@@ -1,7 +1,7 @@
 from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash, jsonify
-from gardenDiary.forms import DiaryForm
-from gardenDiary.models import Diary
+from gardenDiary.forms import DiaryForm, ReminderForm
+from gardenDiary.models import Diary, Reminder
 from user.models import User, Following
 from user.decorators import login_required
 import datetime
@@ -155,3 +155,30 @@ def toggleNotFollowing():
 
 
     return jsonify(button_id=button_id)
+
+@app.route('/reminder', methods=('GET', 'POST'))
+@login_required
+def reminder():
+    form = ReminderForm()
+
+    if form.validate_on_submit():
+        badge = request.files.get('badge')
+        filename = None
+        try:
+            filename = uploaded_images.save(badge)
+        except:
+            flash("The image was not uploaded")
+        user = User.query.filter_by(id=session['userID']).first()
+        title = form.title.data
+        detail = form.detail.data
+        reminder = Reminder(user, title, detail, filename)
+        db.session.add(reminder)
+        db.session.commit()
+        flash("New Reminder Created!")
+        app.logger.info('%s: New New Reminder: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
+
+        diary = getDiary(session['userID'],1)
+
+        return render_template('gardenDiary/dashboard.html', diary=diary)
+
+    return render_template('gardenDiary/reminder.html', form=form, action="new")

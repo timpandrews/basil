@@ -11,3 +11,13 @@ class DiaryForm(Form):
         validators.Length(max=80)
         ])
     body = TextAreaField('Content', validators=[validators.Required()])
+
+class ReminderForm(Form):
+    badge = FileField('Badge', validators=[
+        FileAllowed(['jpg', 'png'], 'Images only.')
+        ])
+    title = StringField('Title', validators=[
+        validators.Required(),
+        validators.Length(max=80)
+        ])
+    detail = TextAreaField('Detail', validators=[validators.Required()])
