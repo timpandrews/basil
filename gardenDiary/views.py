@@ -17,11 +17,12 @@ def index():
 @app.route('/dashboard/<int:page>')
 @login_required
 #dahsbooard
-def dashboard(page=1):
+def dashboard():
 
-    diary = getDiary(session['userID'],page)
+    diary = getDiary(session['userID'])
+    show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
 
-    return render_template('gardenDiary/dashboard.html', diary=diary)
+    return render_template('gardenDiary/dashboard.html', diary=diary, show_records=show_records)
 
 @app.route('/entry', methods=('GET', 'POST')) # Add New
 @login_required

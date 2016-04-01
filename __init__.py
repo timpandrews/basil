@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__)
+app.jinja_env.add_extension('jinja2.ext.loopcontrols') # jinja2 extention for loop controls = adds break & continue
 app.config.from_object('settings')
 db = SQLAlchemy(app)
 
