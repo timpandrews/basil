@@ -19,4 +19,4 @@ UPLOADED_IMAGES_DEST = '/Users/timandrews/Desktop/apps/basil/static/usrMedia'
 UPLOADED_IMAGES_URL = '/static/usrMedia/'
 
 # SQLAlchemy Paginate
-POSTS_PER_PAGE = 3
+DEFAULT_ENTRIES_PER_PAGE = 5

@@ -18,9 +18,9 @@
             <p>{{ entry.body }}</p>
 
             {% if session.get('userID') %}
-                <a href="{{ url_for('edit', diary_id=entry.id) }}"><i class="fa fa-pencil fa-lg"></i></a>
+                <a href="{{ url_for('diaryEntryEdit', diary_id=entry.id) }}"><i class="fa fa-pencil fa-lg"></i></a>
                 &nbsp;&nbsp;&nbsp;
-                <a href="{{ url_for('delete', diary_id=entry.id) }}"><i class="fa fa-trash fa-lg"></i></a>
+                <a href="{{ url_for('diaryEntryDelete', diary_id=entry.id) }}"><i class="fa fa-trash fa-lg"></i></a>
                 <br><br>
             {% endif %}
 
