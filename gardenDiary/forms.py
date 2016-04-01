@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import validators, StringField, TextAreaField
+from wtforms import validators, StringField, TextAreaField, DateField
 from flask_wtf.file import FileField, FileAllowed
 
 class DiaryForm(Form):
@@ -21,3 +21,4 @@ class ReminderForm(Form):
         validators.Length(max=80)
         ])
     detail = TextAreaField('Detail', validators=[validators.Required()])
+    reminder_date = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])

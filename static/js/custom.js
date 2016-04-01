@@ -2,6 +2,8 @@
  * Created by timandrews on 3/25/16.
  */
 
+//DatePicker Fields
+$( "#reminder_date" ).datepicker();
 
 //Change following button to un-follow on hover
 $(".btnFollowing").hover(

@@ -40,6 +40,7 @@ class Reminder(db.Model):
     title = db.Column(db.String(80))
     detail = db.Column(db.Text)
     badge = db.Column(db.String(256))
+    reminder_date = db.Column(db.DateTime)
     create_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
@@ -48,10 +49,11 @@ class Reminder(db.Model):
     def imgsrc(self):
         return uploaded_images.url(self.badge)
 
-    def __init__(self, user, title, detail, badge=None, create_date=None, update_date=None, active=True):
+    def __init__(self, user, title, detail, reminder_date, badge=None, create_date=None, update_date=None, active=True):
         self.user_id = user.id
         self.title = title
         self.detail = detail
+        self.reminder_date = reminder_date
         self.badge = badge
         if create_date is None:
             self.create_date = datetime.utcnow()

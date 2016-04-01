@@ -171,7 +171,8 @@ def reminder():
         user = User.query.filter_by(id=session['userID']).first()
         title = form.title.data
         detail = form.detail.data
-        reminder = Reminder(user, title, detail, filename)
+        reminder_date = form.reminder_date.data
+        reminder = Reminder(user, title, detail, reminder_date, filename)
         db.session.add(reminder)
         db.session.commit()
         flash("New Reminder Created!")
