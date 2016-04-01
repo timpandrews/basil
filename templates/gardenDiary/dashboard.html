@@ -11,11 +11,27 @@
             <div class="col-sm-8">
 
                 <div class="diary-list">
-                    {% set x = 1 %}
+                    {% for reminder in reminders %}
+                        <div class="row diary-entry">
+                            <div class="col-md-3">
+                                {{ loop.index }}
+                                <br>
+                                {% if reminder.badge %}
+                                    <img src="{{ reminder.imgsrc }}" height="30px" class="img-rounded">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-9">
+                                {{ reminder.reminder_date.strftime('%Y-%m-%d') }}
+                                <h4><a href="{{ url_for('reminderDetail', reminder_id=reminder.id) }}">{{ reminder.title }}</a></h4>
+                            </div>
+                        </div>
+                        <hr/>
+                    {% endfor %}
                     {% for diaryEntry in diary %}
 
                         <div class="row diary-entry">
                             <div class="col-md-3">
+                                {{ loop.index }}
                                 <br>
                                 {% if diaryEntry.badge %}
                                     <img src="{{ diaryEntry.imgsrc }}" height="60px" class="img-rounded">
@@ -29,14 +45,17 @@
                             </div>
                         </div>
                         <hr/>
-                        {% if x == show_records %}{% break %}{% endif %}
-                        {% set x=x+1 %}
+                        {% if loop.index == show_records %}{% break %}{% endif %}
+
                     {% endfor %}
                 </div>
 
-                <div>
-                    <a href="#" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>
-                </div>
+                {% if show_records <= loop.index %}
+                    <div>
+                        {% set page = show_records + records_per_page %}
+                        <a href="{{ url_for('dashboard', page=page) }}" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>
+                    </div>
+                {% endif %}
 
             </div>
             <div class="col-sm-4">

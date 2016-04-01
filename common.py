@@ -1,7 +1,7 @@
 from basil import app, sql, db
 from flask import session
 from user.models import User, Following
-from gardenDiary.models import Diary
+from gardenDiary.models import Diary, Reminder
 
 def getDiary(userID):
 
@@ -17,3 +17,14 @@ def getDiary(userID):
         .all()
 
     return diary
+
+def getReminders(userID):
+
+    reminders = Reminder.query.filter_by(active=True)\
+        .filter_by(user_id=userID)\
+        .order_by(Reminder.reminder_date.desc())\
+        .all()
+
+    print "# Reminders: ", len(reminders)
+
+    return reminders
