@@ -34,7 +34,7 @@ def dashboard(page=None):
 @app.route('/entry', methods=('GET', 'POST')) # Add New
 @login_required
 #dashboard
-def entry():
+def diaryEntry():
     form = DiaryForm()
 
     if form.validate_on_submit():
@@ -59,18 +59,18 @@ def entry():
         reminders = getReminders(session['userID'])
         return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
 
-    return render_template('gardenDiary/entry.html', form=form, action="new")
+    return render_template('gardenDiary/diaryEntry.html', form=form, action="new")
 
 @app.route('/entryDetail/<int:diary_id>')
 @login_required
-def entryDetail(diary_id):
+def diaryEntryDetail(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
-    return render_template('gardenDiary/entryDetail.html', entry=entry)
+    return render_template('gardenDiary/diaryEntryDetail.html', entry=entry)
 
 @app.route('/delete/<int:diary_id>')
 @login_required
 #dashboard
-def delete(diary_id):
+def diaryEntryDelete(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     entry.active = False
     db.session.commit()
@@ -85,7 +85,7 @@ def delete(diary_id):
 
 @app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
 @login_required
-def edit(diary_id):
+def diaryEntryEdit(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     form = DiaryForm(obj=entry)
     if form.validate_on_submit():
@@ -108,8 +108,8 @@ def edit(diary_id):
         db.session.commit()
         flash("Diary Entry Updated!")
         app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
-        return redirect(url_for('entryDetail', diary_id=diary_id))
-    return render_template('gardenDiary/entry.html', form=form, entry=entry, action="edit")
+        return redirect(url_for('diaryEntryDetail', diary_id=diary_id))
+    return render_template('gardenDiary/diaryEntry.html', form=form, entry=entry, action="edit")
 
 
 ### Reminder Add/Edit/Delete Pages ###

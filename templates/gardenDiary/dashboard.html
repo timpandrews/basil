@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-md-9">
                                 {{ diaryEntry.publish_date.strftime('%Y-%m-%d') }}
-                                <h4><a href="{{ url_for('entryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
+                                <h4><a href="{{ url_for('diaryEntryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
                                 <p>{{ diaryEntry.diaryUser.fullname }}</p>
                                 <p>{{ diaryEntry.body }}</p>
                             </div>
@@ -61,7 +61,7 @@
             <div class="col-sm-4">
                 <div class="panel panel-success">
                     <div class="panel-body">
-                        <a href="{{ url_for('entry') }}" class="btn btn-success">New Diary Entry <i class="fa fa-leaf"></i></a>
+                        <a href="{{ url_for('diaryEntry') }}" class="btn btn-success">New Diary Entry <i class="fa fa-leaf"></i></a>
                         <br/><br/>
                         <a href="{{ url_for('reminder') }}" class="btn btn-success">Add Reminder <i class="fa fa-bell"></i></a>
 
