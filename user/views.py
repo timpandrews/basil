@@ -4,7 +4,7 @@ from user.forms import SignupForm, LoginForm
 from user.models import User
 from gardenDiary.models import Diary
 from user.decorators import login_required
-from common import getDiary, getReminders
+from common import getDashboardData
 import datetime
 
 @app.route('/login', methods=('GET','POST'))
@@ -36,10 +36,8 @@ def login():
                 app.logger.info('%s: Successful login for: %s', datetime.datetime.utcnow(), form.username.data)
 
                 records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-                show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
-                diary = getDiary(session['userID'])
-                reminders = getReminders(session['userID'])
-                return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
+                diary, reminders, plantings = getDashboardData(session['userID'])
+                return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
 
         else: # bad username or password
             error = "Incorrect username and/or password"

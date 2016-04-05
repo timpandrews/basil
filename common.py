@@ -3,7 +3,8 @@ from flask import session
 from user.models import User, Following
 from gardenDiary.models import Diary, Reminder, Planting
 
-def getDiary(userID):
+
+def getDashboardData(userID):
 
     followingList = []
     followingList.append(session['userID'])
@@ -16,23 +17,14 @@ def getDiary(userID):
         .order_by(Diary.publish_date.desc())\
         .all()
 
-    return diary
-
-def getReminders(userID):
-
     reminders = Reminder.query.filter_by(active=True)\
         .filter_by(user_id=userID)\
         .order_by(Reminder.reminder_date.desc())\
         .all()
-
-    return reminders
-
-
-def getPlantings(userID):
 
     plantings = Planting.query.filter_by(active=True)\
         .filter_by(user_id=userID)\
         .order_by(Planting.publish_date.desc())\
         .all()
 
-    return plantings
+    return (diary, reminders, plantings)
