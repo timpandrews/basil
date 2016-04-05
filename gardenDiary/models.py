@@ -67,3 +67,35 @@ class Reminder(db.Model):
 
     def __repr__(self):
         return '<reminder %r>' % self.title
+
+class Planting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    plantingType = db.Column(db.String(75))
+    plantName = db.Column(db.String(256))
+    badge = db.Column(db.String(256))
+    publish_date = db.Column(db.DateTime)
+    update_date = db.Column(db.DateTime)
+    active = db.Column(db.Boolean)
+
+    @property
+    def imgsrc(self):
+        return uploaded_images.url(self.badge)
+
+    def __init__(self, user, plantingType, plantName, badge=None, publish_date=None, update_date=None, active=True):
+        self.user_id = user.id
+        self.plantingType = plantingType
+        self.plantName = plantName
+        self.badge = badge
+        if publish_date is None:
+            self.publish_date = datetime.utcnow()
+        else:
+            self.publish_date = publish_date
+        if update_date is None:
+            self.update_date = datetime.utcnow()
+        else:
+            self.update_date = update_date
+        self.active = active
+
+    def __repr__(self):
+        return '<planting %r>' % self.plantName

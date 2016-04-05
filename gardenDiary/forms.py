@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import validators, StringField, TextAreaField, DateField
+from wtforms import validators, StringField, TextAreaField, DateField, SelectField
 from flask_wtf.file import FileField, FileAllowed
 
 class DiaryForm(Form):
@@ -22,3 +22,16 @@ class ReminderForm(Form):
         ])
     detail = TextAreaField('Detail', validators=[validators.Required()])
     reminder_date = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])
+
+class PlantingForm(Form):
+    badge = FileField('Badge', validators=[
+        FileAllowed(['jpg', 'png'], 'Images only.')
+        ])
+    plantName = StringField('Plant Name', validators=[
+        validators.Required(),
+        validators.Length(max=256)
+        ])
+    plantingType = SelectField(
+        'Planting Type',
+        choices=[('sowIndoors', 'Sow seeds indoor'), ('sowOutdoors', 'Sow seeds outdoors'), ('plantSeedlings', 'Plant seedlings outdoors')]
+    )

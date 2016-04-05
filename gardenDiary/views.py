@@ -1,7 +1,7 @@
 from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash, jsonify
-from gardenDiary.forms import DiaryForm, ReminderForm
-from gardenDiary.models import Diary, Reminder
+from gardenDiary.forms import DiaryForm, ReminderForm, PlantingForm
+from gardenDiary.models import Diary, Reminder, Planting
 from user.models import User, Following
 from user.decorators import login_required
 import datetime
@@ -110,6 +110,38 @@ def diaryEntryEdit(diary_id):
         app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
         return redirect(url_for('diaryEntryDetail', diary_id=diary_id))
     return render_template('gardenDiary/diaryEntry.html', form=form, entry=entry, action="edit")
+
+### New Plantings Add/Edit/Delete Pages ###
+@app.route('/planting', methods=('GET', 'POST'))
+@login_required
+def planting():
+    form = PlantingForm()
+
+    if form.validate_on_submit():
+        badge = request.files.get('badge')
+        filename = None
+        try:
+            filename = uploaded_images.save(badge)
+        except:
+            flash("The image was not uploaded")
+        user = User.query.filter_by(id=session['userID']).first()
+        plantingType = form.plantingType.data
+        plantName = form.plantName.data
+        planting = Planting(user, plantingType, plantName, filename)
+        db.session.add(planting)
+        db.session.commit()
+        flash("New Planting Created!")
+        app.logger.info('%s: New Planting: %s by: %s', datetime.datetime.utcnow(), form.plantName.data, session.get('username'))
+
+        records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
+        show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
+        diary = getDiary(session['userID'])
+        reminders = getReminders(session['userID'])
+        return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
+
+    return render_template('gardenDiary/planting.html', form=form, action="new")
+
+
 
 
 ### Reminder Add/Edit/Delete Pages ###
