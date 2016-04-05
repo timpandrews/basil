@@ -5,7 +5,7 @@ from gardenDiary.models import Diary, Reminder, Planting
 from user.models import User, Following
 from user.decorators import login_required
 import datetime
-from common import getDiary, getReminders
+from common import getDiary, getReminders, getPlantings
 
 ### Index/Home Page ###
 @app.route('/')
@@ -27,7 +27,8 @@ def dashboard(page=None):
         show_records = page
     diary = getDiary(session['userID'])
     reminders = getReminders(session['userID'])
-    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
+    plantings = getPlantings(session['userID'])
+    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
 
 
 ### Diary Entry Add/Edit/Delete Pages ###
@@ -141,7 +142,53 @@ def planting():
 
     return render_template('gardenDiary/planting.html', form=form, action="new")
 
+@app.route('/plantingDetail/<int:planting_id>')
+@login_required
+def plantingDetail(planting_id):
+    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    return render_template('gardenDiary/plantingDetail.html', planting=planting)
 
+@app.route('/plantingDelete/<int:planting_id>')
+@login_required
+#dashboard
+def plantingDelete(planting_id):
+    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    planting.active = False
+    db.session.commit()
+    flash("Planting Deleted")
+    app.logger.info('%s: Deleted planting: %s by: %s', datetime.datetime.utcnow(), planting.plantName, session.get('username'))
+
+    records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
+    show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
+    diary = getDiary(session['userID'])
+    reminders = getReminders(session['userID'])
+    plantings = getPlantings(session['userID'])
+    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+
+@app.route('/plantingEdit/<int:planting_id>', methods=('GET', 'POST'))
+@login_required
+def plantingEdit(planting_id):
+    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    form = PlantingForm(obj=planting)
+    if form.validate_on_submit():
+        original_badge = planting.badge
+        form.populate_obj(planting) # replaced entry with new data from form.
+        if form.badge.has_file():
+            badge = request.files.get('badge')
+            try:
+                filename = uploaded_images.save(badge)
+            except:
+                flash("The image was not uploaded")
+            if filename:
+                planting.badge = filename
+        else:
+            planting.badge = original_badge
+
+        db.session.commit()
+        flash("Planting Updated!")
+        app.logger.info('%s: Upldated Planting: %s by: %s', datetime.datetime.utcnow(), planting.plantName, session.get('username'))
+        return redirect(url_for('plantingDetail', planting_id=planting_id))
+    return render_template('gardenDiary/planting.html', form=form, planting=planting, action="edit")
 
 
 ### Reminder Add/Edit/Delete Pages ###

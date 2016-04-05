@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <h1>Garden Diary -- Planting Detail</h1>
+
+            {% include '_flashMessages.html' %}
+
+            {% if planting.badge %}
+                <img src="{{ planting.imgsrc }}" height="150px" class="img-rounded">
+            {% endif %}
+
+            <h3>{{ planting.plantingType }}</h3>
+            <p>{{ planting.plantName }}</p>
+
+            {% if session.get('userID') %}
+                <a href="{{ url_for('plantingEdit', planting_id=planting.id) }}"><i class="fa fa-pencil fa-lg"></i></a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="{{ url_for('plantingDelete', planting_id=planting.id) }}"><i class="fa fa-trash fa-lg"></i></a>
+                <br><br>
+            {% endif %}
+
+            <a href="{{ url_for('dashboard') }}"><i class="fa fa-chevron-left"></i> back to dashboard</a>
+
+            <hr/>
+
+        </div>
+
+    </div>
+
+{% endblock %}

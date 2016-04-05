@@ -18,7 +18,7 @@
             {% if action == "new" %}
                 <form method="POST" action="{{ url_for('planting') }}" enctype="multipart/form-data" role="form">
             {% else %}
-                <form method="POST" action="#" enctype="multipart/form-data" role="form">
+                <form method="POST" action="{{ url_for('plantingEdit', planting_id=planting.id) }}" enctype="multipart/form-data" role="form">
             {% endif %}
 
                 {{ form.hidden_tag() }}
@@ -36,7 +36,7 @@
                 {% if action == "new" %}
                     <button type="submit" class="btn btn-success">Add New Planting <i class="fa fa-bell"></i></button>
                 {% else %}
-                    <button type="submit" class="btn btn-success">Update New Planting <i class="fa fa-bell"></i></button>
+                    <button type="submit" class="btn btn-success">Update Planting <i class="fa fa-bell"></i></button>
                 {% endif %}
 
             </form>
