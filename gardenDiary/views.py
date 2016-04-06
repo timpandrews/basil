@@ -215,9 +215,15 @@ def planting():
         except:
             flash("The image was not uploaded")
         user = User.query.filter_by(id=session['userID']).first()
+        feedType = 'pla'
+        title = None
+        detail = None
+        reminderStartDate = None
+        reminderEndDate = None
         plantingType = form.plantingType.data
+        plantingDate = None
         plantName = form.plantName.data
-        planting = Planting(user, plantingType, plantName, filename)
+        planting = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
         db.session.add(planting)
         db.session.commit()
         flash("New Planting Created!")
@@ -225,9 +231,8 @@ def planting():
 
         records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
         show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
-        diary = getDiary(session['userID'])
-        reminders = getReminders(session['userID'])
-        return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
+        feed = getFeedData(session['userID'])
+        return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
     return render_template('gardenDiary/planting.html', form=form, action="new")
 

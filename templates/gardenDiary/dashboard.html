@@ -11,27 +11,8 @@
             <div class="col-sm-8">
 
                 <div class="diary-list">
-{#                    {% for reminder in reminders %}#}
-
-{#                    {% endfor %}#}
-{#                    {% for planting in plantings %}#}
-{#                        <div class="row diary-entry">#}
-{#                            <div class="col-md-3">#}
-{#                                {{ loop.index }}#}
-{#                                <br>#}
-{#                                {% if planting.badge %}#}
-{#                                    <img src="{{ planting.imgsrc }}" height="30px" class="img-rounded">#}
-{#                                {% endif %}#}
-{#                            </div>#}
-{#                            <div class="col-md-9">#}
-{#                                {{ planting.plantingType }}#}
-{#                                <h4><a href="{{ url_for('plantingDetail', planting_id=planting.id) }}">{{ planting.plantName }}</a></h4>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <hr/>#}
-{#                    {% endfor %}#}
                     {% for feedEntry in feed %}
-                        {{ loop.index }}
+{#                        {{ loop.index }}#}
                         {% if feedEntry.feedType == 'dia' %}
                             <div class="row diary-entry">
                                 <div class="col-md-3">
@@ -63,18 +44,37 @@
                             </div>
                             <hr/>
                         {% elif feedEntry.feedType == 'pla' %}
+                            <div class="row diary-entry">
+                                <div class="col-md-3">
+                                    <br>
+                                    {% if feedEntry.badge %}
+                                        <img src="{{ feedEntry.imgsrc }}" height="30px" class="img-rounded">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-9">
+                                    {% if feedEntry.plantingType == 'sowI' %}
+                                        Sow seeds indoor
+                                    {% elif feedEntry.plantingType == 'sowO' %}
+                                        Sow seeds outdoors
+                                    {% elif feedEntry.plantingType == 'tra' %}
+                                        Transplant seedlings outdoors
+                                    {% endif %}
+                                    <h4><a href="{{ url_for('plantingDetail', planting_id=feedEntry.id) }}">{{ feedEntry.plantName }}</a></h4>
+                                </div>
+                            </div>
+                            <hr/>
                         {% endif %}
                         {% if loop.index == show_records %}{% break %}{% endif %}
 
                     {% endfor %}
                 </div>
 
-{#                {% if show_records <= loop.index %}#}
-{#                    <div>#}
-{#                        {% set page = show_records + records_per_page %}#}
-{#                        <a href="{{ url_for('dashboard', page=page) }}" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>#}
-{#                    </div>#}
-{#                {% endif %}#}
+                {% if show_records <= loop.index %}
+                    <div>
+                        {% set page = show_records + records_per_page %}
+                        <a href="{{ url_for('dashboard', page=page) }}" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>
+                    </div>
+                {% endif %}
 
             </div>
             <div class="col-sm-4">
