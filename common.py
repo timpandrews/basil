@@ -18,4 +18,6 @@ def getFeedData(userID):
         .order_by(Feed.publish_date.desc())\
         .all()
 
+    print "Qty-Feed: ", len(feed)
+
     return (feed)

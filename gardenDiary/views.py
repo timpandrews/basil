@@ -14,6 +14,7 @@ def index():
     return render_template('home.html')
 
 
+
 ### Dashboard Page ###
 @app.route('/dashboard') #aka Garden Diary
 @app.route('/dashboard/<int:page>')
@@ -28,6 +29,7 @@ def dashboard(page=None):
     feed = getFeedData(session['userID'])
 
     return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
+
 
 
 ### Diary Entry Add/Edit/Delete Pages ###
@@ -68,14 +70,14 @@ def diary():
 
 @app.route('/diaryDetail/<int:diary_id>')
 @login_required
-def diaryEntryDetail(diary_id):
+def diaryDetail(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     return render_template('gardenDiary/diaryEntryDetail.html', entry=entry)
 
-@app.route('/delete/<int:diary_id>')
+@app.route('/diarydelete/<int:diary_id>')
 @login_required
 #dashboard
-def diaryEntryDelete(diary_id):
+def diaryDelete(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     entry.active = False
     db.session.commit()
@@ -86,9 +88,9 @@ def diaryEntryDelete(diary_id):
     feed = getFeedData(session['userID'])
     return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
-@app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
+@app.route('/diaryEdit/<int:diary_id>', methods=('GET', 'POST'))
 @login_required
-def diaryEntryEdit(diary_id):
+def diaryEdit(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()
     form = DiaryForm(obj=entry)
     if form.validate_on_submit():
@@ -113,6 +115,8 @@ def diaryEntryEdit(diary_id):
         app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
         return redirect(url_for('diaryEntryDetail', diary_id=diary_id))
     return render_template('gardenDiary/diaryEntry.html', form=form, entry=entry, action="edit")
+
+
 
 ### New Plantings Add/Edit/Delete Pages ###
 @app.route('/planting', methods=('GET', 'POST'))
@@ -191,6 +195,7 @@ def plantingEdit(planting_id):
     return render_template('gardenDiary/planting.html', form=form, planting=planting, action="edit")
 
 
+
 ### Reminder Add/Edit/Delete Pages ###
 @app.route('/reminder', methods=('GET', 'POST'))
 @login_required
@@ -266,6 +271,8 @@ def reminderEdit(reminder_id):
         app.logger.info('%s: Updated Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
         return redirect(url_for('reminderDetail', reminder_id=reminder_id))
     return render_template('gardenDiary/reminder.html', form=form, reminder=reminder, action="edit")
+
+
 
 ### Gardeners Page ###
 @app.route('/gardeners')

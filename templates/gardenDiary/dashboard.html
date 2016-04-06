@@ -43,24 +43,25 @@
 {#                        </div>#}
 {#                        <hr/>#}
 {#                    {% endfor %}#}
-                    {% for feedEntry in Feed %}
-
-                        <div class="row diary-entry">
-                            <div class="col-md-3">
-                                {{ loop.index }}
-                                <br>
-                                {% if feedEntry.badge %}
-                                    <img src="{{ feedEntry.imgsrc }}" height="60px" class="img-rounded">
-                                {% endif %}
+                    {% for feedEntry in feed %}
+                        {{ loop.index }}
+                        {% if feedEntry.feedType == 'dia' %}
+                            <div class="row diary-entry">
+                                <div class="col-md-3">
+                                    <br>
+                                    {% if feedEntry.badge %}
+                                        <img src="{{ feedEntry.imgsrc }}" height="60px" class="img-rounded">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ feedEntry.publish_date.strftime('%Y-%m-%d') }}
+                                    <h4><a href="{{ url_for('diaryDetail', diary_id=feedEntry.id) }}">{{ feedEntry.title }}</a></h4>
+                                    <p>{{ feedEntry.diaryUser.fullname }}</p>
+                                    <p>{{ feedEntry.body }}</p>
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                                {{ feedEntry.publish_date.strftime('%Y-%m-%d') }}
-                                <h4><a href="{{ url_for('diaryDetail', diary_id=feedEntry.id) }}">{{ feedEntry.title }}</a></h4>
-                                <p>{{ feedEntry.diaryUser.fullname }}</p>
-                                <p>{{ feedEntry.body }}</p>
-                            </div>
-                        </div>
-                        <hr/>
+                            <hr/>
+                        {% endif %}
                         {% if loop.index == show_records %}{% break %}{% endif %}
 
                     {% endfor %}
