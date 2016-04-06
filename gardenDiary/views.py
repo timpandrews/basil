@@ -71,8 +71,8 @@ def diary():
 @app.route('/diaryDetail/<int:diary_id>')
 @login_required
 def diaryDetail(diary_id):
-    entry = Diary.query.filter_by(id=diary_id).first_or_404()
-    return render_template('gardenDiary/diaryEntryDetail.html', entry=entry)
+    diary = Feed.query.filter_by(id=diary_id).first_or_404()
+    return render_template('gardenDiary/diaryDetail.html', diary=diary)
 
 @app.route('/diarydelete/<int:diary_id>')
 @login_required
