@@ -7,7 +7,11 @@ class Feed(db.Model):
     feedType = db.Column(db.String(3))
     title = db.Column(db.String(80))
     detail = db.Column(db.Text)
-
+    reminderStartDate = db.Column(db.DateTime)
+    reminderEndDate = db.Column(db.DateTime)
+    plantingType = db.Column(db.String(4))
+    plantingDate = db.Column(db.DateTime)
+    plantName = db.Column(db.String(256))
     badge = db.Column(db.String(256))
     publish_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
@@ -25,6 +29,11 @@ class Feed(db.Model):
                  feedType,
                  title,
                  detail,
+                 reminderStartDate,
+                 reminderEndDate,
+                 plantingType,
+                 plantingDate,
+                 plantName,
                  badge=None,
                  publish_date=None,
                  update_date=None,
@@ -35,6 +44,10 @@ class Feed(db.Model):
         self.title = title
         self.detail = detail
         self.badge = badge
+        self.reminderStartDate = reminderStartDate
+        self.reminderEndDate = reminderEndDate
+        self.plantingType = plantingType
+        self.plantName = plantName
         if publish_date is None:
             self.publish_date = datetime.utcnow()
         else:
