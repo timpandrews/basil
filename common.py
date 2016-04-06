@@ -1,7 +1,7 @@
 from basil import app, sql, db
 from flask import session
 from user.models import User, Following
-from gardenDiary.models import Diary, Reminder, Planting
+from gardenDiary.models import Feed, Reminder, Planting
 
 
 def getDashboardData(userID):

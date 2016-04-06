@@ -2,7 +2,7 @@ from basil import app, sql, db
 from flask import render_template, redirect, url_for, session, request
 from user.forms import SignupForm, LoginForm
 from user.models import User
-from gardenDiary.models import Diary
+from gardenDiary.models import Feed
 from user.decorators import login_required
 from common import getDashboardData
 import datetime

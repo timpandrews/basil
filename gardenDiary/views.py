@@ -1,7 +1,7 @@
 from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash, jsonify
 from gardenDiary.forms import DiaryForm, ReminderForm, PlantingForm
-from gardenDiary.models import Diary, Reminder, Planting
+from gardenDiary.models import Feed, Reminder, Planting
 from user.models import User, Following
 from user.decorators import login_required
 import datetime
