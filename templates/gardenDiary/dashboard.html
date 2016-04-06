@@ -11,53 +11,53 @@
             <div class="col-sm-8">
 
                 <div class="diary-list">
-                    {% for reminder in reminders %}
-                        <div class="row diary-entry">
-                            <div class="col-md-3">
-                                {{ loop.index }}
-                                <br>
-                                {% if reminder.badge %}
-                                    <img src="{{ reminder.imgsrc }}" height="30px" class="img-rounded">
-                                {% endif %}
-                            </div>
-                            <div class="col-md-9">
-                                {{ reminder.reminder_date.strftime('%Y-%m-%d') }}
-                                <h4><a href="{{ url_for('reminderDetail', reminder_id=reminder.id) }}">{{ reminder.title }}</a></h4>
-                            </div>
-                        </div>
-                        <hr/>
-                    {% endfor %}
-                    {% for planting in plantings %}
-                        <div class="row diary-entry">
-                            <div class="col-md-3">
-                                {{ loop.index }}
-                                <br>
-                                {% if planting.badge %}
-                                    <img src="{{ planting.imgsrc }}" height="30px" class="img-rounded">
-                                {% endif %}
-                            </div>
-                            <div class="col-md-9">
-                                {{ planting.plantingType }}
-                                <h4><a href="{{ url_for('plantingDetail', planting_id=planting.id) }}">{{ planting.plantName }}</a></h4>
-                            </div>
-                        </div>
-                        <hr/>
-                    {% endfor %}
-                    {% for diaryEntry in diary %}
+{#                    {% for reminder in reminders %}#}
+{#                        <div class="row diary-entry">#}
+{#                            <div class="col-md-3">#}
+{#                                {{ loop.index }}#}
+{#                                <br>#}
+{#                                {% if reminder.badge %}#}
+{#                                    <img src="{{ reminder.imgsrc }}" height="30px" class="img-rounded">#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                            <div class="col-md-9">#}
+{#                                {{ reminder.reminder_date.strftime('%Y-%m-%d') }}#}
+{#                                <h4><a href="{{ url_for('reminderDetail', reminder_id=reminder.id) }}">{{ reminder.title }}</a></h4>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <hr/>#}
+{#                    {% endfor %}#}
+{#                    {% for planting in plantings %}#}
+{#                        <div class="row diary-entry">#}
+{#                            <div class="col-md-3">#}
+{#                                {{ loop.index }}#}
+{#                                <br>#}
+{#                                {% if planting.badge %}#}
+{#                                    <img src="{{ planting.imgsrc }}" height="30px" class="img-rounded">#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                            <div class="col-md-9">#}
+{#                                {{ planting.plantingType }}#}
+{#                                <h4><a href="{{ url_for('plantingDetail', planting_id=planting.id) }}">{{ planting.plantName }}</a></h4>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <hr/>#}
+{#                    {% endfor %}#}
+                    {% for feedEntry in Feed %}
 
                         <div class="row diary-entry">
                             <div class="col-md-3">
                                 {{ loop.index }}
                                 <br>
-                                {% if diaryEntry.badge %}
-                                    <img src="{{ diaryEntry.imgsrc }}" height="60px" class="img-rounded">
+                                {% if feedEntry.badge %}
+                                    <img src="{{ feedEntry.imgsrc }}" height="60px" class="img-rounded">
                                 {% endif %}
                             </div>
                             <div class="col-md-9">
-                                {{ diaryEntry.publish_date.strftime('%Y-%m-%d') }}
-                                <h4><a href="{{ url_for('diaryEntryDetail', diary_id=diaryEntry.id) }}">{{ diaryEntry.title }}</a></h4>
-                                <p>{{ diaryEntry.diaryUser.fullname }}</p>
-                                <p>{{ diaryEntry.body }}</p>
+                                {{ feedEntry.publish_date.strftime('%Y-%m-%d') }}
+                                <h4><a href="{{ url_for('diaryEntryDetail', diary_id=feedEntry.id) }}">{{ feedEntry.title }}</a></h4>
+                                <p>{{ feedEntry.diaryUser.fullname }}</p>
+                                <p>{{ feedEntry.body }}</p>
                             </div>
                         </div>
                         <hr/>
@@ -66,12 +66,12 @@
                     {% endfor %}
                 </div>
 
-                {% if show_records <= loop.index %}
-                    <div>
-                        {% set page = show_records + records_per_page %}
-                        <a href="{{ url_for('dashboard', page=page) }}" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>
-                    </div>
-                {% endif %}
+{#                {% if show_records <= loop.index %}#}
+{#                    <div>#}
+{#                        {% set page = show_records + records_per_page %}#}
+{#                        <a href="{{ url_for('dashboard', page=page) }}" class="btn btn-default">Show More <i class="fa fa-caret-square-o-down"></i></a>#}
+{#                    </div>#}
+{#                {% endif %}#}
 
             </div>
             <div class="col-sm-4">

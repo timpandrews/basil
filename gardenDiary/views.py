@@ -1,11 +1,11 @@
 from basil import app, db, uploaded_images
 from flask import render_template, redirect, url_for, session, request, flash, jsonify
 from gardenDiary.forms import DiaryForm, ReminderForm, PlantingForm
-from gardenDiary.models import Feed, Reminder, Planting
+from gardenDiary.models import Feed
 from user.models import User, Following
 from user.decorators import login_required
 import datetime
-from common import getDashboardData
+from common import getFeedData
 
 ### Index/Home Page ###
 @app.route('/')
@@ -25,9 +25,9 @@ def dashboard(page=None):
         show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
     else:
         show_records = page
-    diary, reminders, plantings = getDashboardData(session['userID'])
+    feed = getFeedData(session['userID'])
 
-    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
 
 ### Diary Entry Add/Edit/Delete Pages ###
@@ -54,8 +54,8 @@ def diaryEntry():
         app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
 
         records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-        diary, reminders, plantings = getDashboardData(session['userID'])
-        return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+        feed = getFeedData(session['userID'])
+        return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
     return render_template('gardenDiary/diaryEntry.html', form=form, action="new")
 
@@ -76,8 +76,8 @@ def diaryEntryDelete(diary_id):
     app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
 
     records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-    diary, reminders, plantings = getDashboardData(session['userID'])
-    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+    feed = getFeedData(session['userID'])
+    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
 @app.route('/edit/<int:diary_id>', methods=('GET', 'POST'))
 @login_required
@@ -155,8 +155,8 @@ def plantingDelete(planting_id):
 
     records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
     show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
-    diary, reminders, plantings = getDashboardData(session['userID'])
-    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+    feed = getFeedData(session['userID'])
+    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
 @app.route('/plantingEdit/<int:planting_id>', methods=('GET', 'POST'))
 @login_required
@@ -232,8 +232,8 @@ def reminderDelete(reminder_id):
     app.logger.info('%s: Deleted Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
 
     records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-    diary, reminders, plantings = getDashboardData(session['userID'])
-    return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, plantings=plantings, show_records=show_records, records_per_page=records_per_page)
+    feed = getFeedData(session['userID'])
+    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
 @app.route('/reminderEdit/<int:reminder_id>', methods=('GET', 'POST'))
 @login_required
