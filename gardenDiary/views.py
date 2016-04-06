@@ -31,10 +31,10 @@ def dashboard(page=None):
 
 
 ### Diary Entry Add/Edit/Delete Pages ###
-@app.route('/entry', methods=('GET', 'POST')) # Add New
+@app.route('/diary', methods=('GET', 'POST')) # Add New
 @login_required
 #dashboard
-def diaryEntry():
+def diary():
     form = DiaryForm()
 
     if form.validate_on_submit():
@@ -45,21 +45,28 @@ def diaryEntry():
         except:
             flash("The image was not uploaded")
         user = User.query.filter_by(id=session['userID']).first()
+        feedType = 'dia'
         title = form.title.data
-        body = form.body.data
-        diaryEntry = Diary(user, title, body, filename)
-        db.session.add(diaryEntry)
+        detail = form.detail.data
+        reminderStartDate = None
+        reminderEndDate = None
+        plantingType = None
+        plantingDate = None
+        plantName = None
+        diary = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
+        db.session.add(diary)
         db.session.commit()
-        flash("New Diary Entry Saved!")
-        app.logger.info('%s: New Diary Entry: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
+        flash("New Diary Saved!")
+        app.logger.info('%s: New Diary: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
 
+        show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
         records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
         feed = getFeedData(session['userID'])
         return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
 
-    return render_template('gardenDiary/diaryEntry.html', form=form, action="new")
+    return render_template('gardenDiary/diary.html', form=form, action="new")
 
-@app.route('/entryDetail/<int:diary_id>')
+@app.route('/diaryDetail/<int:diary_id>')
 @login_required
 def diaryEntryDetail(diary_id):
     entry = Diary.query.filter_by(id=diary_id).first_or_404()

@@ -10,7 +10,7 @@ class DiaryForm(Form):
         validators.Required(),
         validators.Length(max=80)
         ])
-    body = TextAreaField('Content', validators=[validators.Required()])
+    detail = TextAreaField('Content', validators=[validators.Required()])
 
 class ReminderForm(Form):
     badge = FileField('Badge', validators=[
