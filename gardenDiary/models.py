@@ -5,7 +5,7 @@ class Diary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String(80))
-    body = db.Column(db.Text)
+    detail = db.Column(db.Text)
     badge = db.Column(db.String(256))
     publish_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
@@ -16,10 +16,10 @@ class Diary(db.Model):
     def imgsrc(self):
         return uploaded_images.url(self.badge)
 
-    def __init__(self, user, title, body, badge=None, publish_date=None, update_date=None, active=True):
+    def __init__(self, user, title, detail, badge=None, publish_date=None, update_date=None, active=True):
         self.user_id = user.id
         self.title = title
-        self.body = body
+        self.detail = detail
         self.badge = badge
         if publish_date is None:
             self.publish_date = datetime.utcnow()
@@ -32,7 +32,7 @@ class Diary(db.Model):
         self.active = active
 
     def __repr__(self):
-        return '<diaryEntry %r>' % self.title
+        return '<FeedEntry %r>' % self.title
 
 class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -99,3 +99,4 @@ class Planting(db.Model):
 
     def __repr__(self):
         return '<planting %r>' % self.plantName
+
