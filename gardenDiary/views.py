@@ -74,16 +74,17 @@ def diaryDetail(diary_id):
     diary = Feed.query.filter_by(id=diary_id).first_or_404()
     return render_template('gardenDiary/diaryDetail.html', diary=diary)
 
-@app.route('/diarydelete/<int:diary_id>')
+@app.route('/diaryDelete/<int:diary_id>')
 @login_required
 #dashboard
 def diaryDelete(diary_id):
-    entry = Diary.query.filter_by(id=diary_id).first_or_404()
-    entry.active = False
+    diary = Feed.query.filter_by(id=diary_id).first_or_404()
+    diary.active = False
     db.session.commit()
-    flash("Diary Entry Deleted")
-    app.logger.info('%s: Deleted Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
+    flash("Diary Deleted")
+    app.logger.info('%s: Deleted Diary: %s by: %s', datetime.datetime.utcnow(), diary.title, session.get('username'))
 
+    show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
     records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
     feed = getFeedData(session['userID'])
     return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
@@ -112,6 +113,90 @@ def diaryEdit(diary_id):
         app.logger.info('%s: Updated Diary: %s by: %s', datetime.datetime.utcnow(), diary.title, session.get('username'))
         return redirect(url_for('diaryDetail', diary_id=diary_id))
     return render_template('gardenDiary/diary.html', form=form, diary=diary, action="edit")
+
+
+
+### Reminder Add/Edit/Delete Pages ###
+@app.route('/reminder', methods=('GET', 'POST'))
+@login_required
+#dashboard
+def reminder():
+    form = ReminderForm()
+
+    if form.validate_on_submit():
+        badge = request.files.get('badge')
+        filename = None
+        try:
+            filename = uploaded_images.save(badge)
+        except:
+            flash("The image was not uploaded")
+        user = User.query.filter_by(id=session['userID']).first()
+        feedType = 'rem'
+        title = form.title.data
+        detail = form.detail.data
+        reminderStartDate = form.reminder_date.data
+        reminderEndDate = None
+        plantingType = None
+        plantingDate = None
+        plantName = None
+        reminder = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
+        db.session.add(reminder)
+        db.session.commit()
+        flash("New Reminder Created!")
+        app.logger.info('%s: New New Reminder: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
+
+        records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
+        show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
+        feed = getFeedData(session['userID'])
+        return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
+
+    return render_template('gardenDiary/reminder.html', form=form, action="new")
+
+@app.route('/reminderDetail/<int:reminder_id>')
+@login_required
+def reminderDetail(reminder_id):
+    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    return render_template('gardenDiary/reminderDetail.html', reminder=reminder)
+
+@app.route('/reminderDelete/<int:reminder_id>')
+@login_required
+#dashboard
+def reminderDelete(reminder_id):
+    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    reminder.active = False
+    db.session.commit()
+    flash("Reminder Deleted")
+    app.logger.info('%s: Deleted Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
+
+    records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
+    feed = getFeedData(session['userID'])
+    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
+
+@app.route('/reminderEdit/<int:reminder_id>', methods=('GET', 'POST'))
+@login_required
+def reminderEdit(reminder_id):
+    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    form = ReminderForm(obj=reminder)
+    if form.validate_on_submit():
+        original_badge = reminder.badge
+        form.populate_obj(reminder) # replaced entry with new data from form.
+        if form.badge.has_file():
+            badge = request.files.get('badge')
+            try:
+                filename = uploaded_images.save(badge)
+            except:
+                flash("The image was not uploaded")
+            if filename:
+                reminder.badge = filename
+        else:
+            reminder.badge = original_badge
+
+        db.session.commit()
+        flash("Reminder Updated!")
+        app.logger.info('%s: Updated Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
+        return redirect(url_for('reminderDetail', reminder_id=reminder_id))
+    return render_template('gardenDiary/reminder.html', form=form, reminder=reminder, action="edit")
+
 
 
 
@@ -193,81 +278,7 @@ def plantingEdit(planting_id):
 
 
 
-### Reminder Add/Edit/Delete Pages ###
-@app.route('/reminder', methods=('GET', 'POST'))
-@login_required
-def reminder():
-    form = ReminderForm()
 
-    if form.validate_on_submit():
-        badge = request.files.get('badge')
-        filename = None
-        try:
-            filename = uploaded_images.save(badge)
-        except:
-            flash("The image was not uploaded")
-        user = User.query.filter_by(id=session['userID']).first()
-        title = form.title.data
-        detail = form.detail.data
-        reminder_date = form.reminder_date.data
-        reminder = Reminder(user, title, detail, reminder_date, filename)
-        db.session.add(reminder)
-        db.session.commit()
-        flash("New Reminder Created!")
-        app.logger.info('%s: New New Reminder: %s by: %s', datetime.datetime.utcnow(), form.title.data, session.get('username'))
-
-        records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-        show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
-        diary = getDiary(session['userID'])
-        reminders = getReminders(session['userID'])
-        return render_template('gardenDiary/dashboard.html', diary=diary, reminders=reminders, show_records=show_records, records_per_page=records_per_page)
-
-    return render_template('gardenDiary/reminder.html', form=form, action="new")
-
-@app.route('/reminderDetail/<int:reminder_id>')
-@login_required
-def reminderDetail(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
-    return render_template('gardenDiary/reminderDetail.html', reminder=reminder)
-
-@app.route('/reminderDelete/<int:reminder_id>')
-@login_required
-#dashboard
-def reminderDelete(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
-    reminder.active = False
-    db.session.commit()
-    flash("Reminder Deleted")
-    app.logger.info('%s: Deleted Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
-
-    records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
-    feed = getFeedData(session['userID'])
-    return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
-
-@app.route('/reminderEdit/<int:reminder_id>', methods=('GET', 'POST'))
-@login_required
-def reminderEdit(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
-    form = ReminderForm(obj=reminder)
-    if form.validate_on_submit():
-        original_badge = reminder.badge
-        form.populate_obj(reminder) # replaced entry with new data from form.
-        if form.badge.has_file():
-            badge = request.files.get('badge')
-            try:
-                filename = uploaded_images.save(badge)
-            except:
-                flash("The image was not uploaded")
-            if filename:
-                reminder.badge = filename
-        else:
-            reminder.badge = original_badge
-
-        db.session.commit()
-        flash("Reminder Updated!")
-        app.logger.info('%s: Updated Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
-        return redirect(url_for('reminderDetail', reminder_id=reminder_id))
-    return render_template('gardenDiary/reminder.html', form=form, reminder=reminder, action="edit")
 
 
 

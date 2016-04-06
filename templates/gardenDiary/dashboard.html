@@ -12,20 +12,7 @@
 
                 <div class="diary-list">
 {#                    {% for reminder in reminders %}#}
-{#                        <div class="row diary-entry">#}
-{#                            <div class="col-md-3">#}
-{#                                {{ loop.index }}#}
-{#                                <br>#}
-{#                                {% if reminder.badge %}#}
-{#                                    <img src="{{ reminder.imgsrc }}" height="30px" class="img-rounded">#}
-{#                                {% endif %}#}
-{#                            </div>#}
-{#                            <div class="col-md-9">#}
-{#                                {{ reminder.reminder_date.strftime('%Y-%m-%d') }}#}
-{#                                <h4><a href="{{ url_for('reminderDetail', reminder_id=reminder.id) }}">{{ reminder.title }}</a></h4>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <hr/>#}
+
 {#                    {% endfor %}#}
 {#                    {% for planting in plantings %}#}
 {#                        <div class="row diary-entry">#}
@@ -61,6 +48,22 @@
                                 </div>
                             </div>
                             <hr/>
+                        {% elif feedEntry.feedType == 'rem' %}
+                            x
+                            <div class="row diary-entry">
+                                <div class="col-md-3">
+                                    <br>
+                                    {% if feedEntry.badge %}
+                                        <img src="{{ feedEntry.imgsrc }}" height="30px" class="img-rounded">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ feedEntry.reminderStartDate.strftime('%Y-%m-%d') }}
+                                    <h4><a href="{{ url_for('reminderDetail', reminder_id=feedEntry.id) }}">{{ feedEntry.title }}</a></h4>
+                                </div>
+                            </div>
+                            <hr/>
+                        {% elif feedEntry.feedType == 'pla' %}
                         {% endif %}
                         {% if loop.index == show_records %}{% break %}{% endif %}
 
