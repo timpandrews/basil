@@ -33,5 +33,5 @@ class PlantingForm(Form):
         ])
     plantingType = SelectField(
         'Planting Type',
-        choices=[('sowIndoors', 'Sow seeds indoor'), ('sowOutdoors', 'Sow seeds outdoors'), ('plantSeedlings', 'Plant seedlings outdoors')]
+        choices=[('sowI', 'Sow seeds indoor'), ('sowO', 'Sow seeds outdoors'), ('tran', 'Transplant seedlings outdoors')]
     )
