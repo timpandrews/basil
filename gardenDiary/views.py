@@ -91,30 +91,27 @@ def diaryDelete(diary_id):
 @app.route('/diaryEdit/<int:diary_id>', methods=('GET', 'POST'))
 @login_required
 def diaryEdit(diary_id):
-    entry = Diary.query.filter_by(id=diary_id).first_or_404()
-    form = DiaryForm(obj=entry)
+    diary = Feed.query.filter_by(id=diary_id).first_or_404()
+    form = DiaryForm(obj=diary)
     if form.validate_on_submit():
-        original_badge = entry.badge
-        form.populate_obj(entry) # replaced entry with new data from form.
-        print "entry.badge: ", entry.badge
-        print "form.badge.has_file(): ", form.badge.has_file()
+        original_badge = diary.badge
+        form.populate_obj(diary) # replaced entry with new data from form.
         if form.badge.has_file():
             badge = request.files.get('badge')
-            print "badge: ", badge
             try:
                 filename = uploaded_images.save(badge)
             except:
                 flash("The image was not uploaded")
             if filename:
-                entry.badge = filename
+                diary.badge = filename
         else:
-            entry.badge = original_badge
+            diary.badge = original_badge
 
         db.session.commit()
-        flash("Diary Entry Updated!")
-        app.logger.info('%s: Updated Diary Entry: %s by: %s', datetime.datetime.utcnow(), entry.title, session.get('username'))
-        return redirect(url_for('diaryEntryDetail', diary_id=diary_id))
-    return render_template('gardenDiary/diaryEntry.html', form=form, entry=entry, action="edit")
+        flash("Diary Updated!")
+        app.logger.info('%s: Updated Diary: %s by: %s', datetime.datetime.utcnow(), diary.title, session.get('username'))
+        return redirect(url_for('diaryDetail', diary_id=diary_id))
+    return render_template('gardenDiary/diary.html', form=form, diary=diary, action="edit")
 
 
 
