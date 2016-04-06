@@ -155,7 +155,7 @@ def reminder():
 @app.route('/reminderDetail/<int:reminder_id>')
 @login_required
 def reminderDetail(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    reminder = Feed.query.filter_by(id=reminder_id).first_or_404()
     return render_template('gardenDiary/reminderDetail.html', reminder=reminder)
 
 @app.route('/reminderDelete/<int:reminder_id>')
