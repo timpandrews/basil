@@ -134,7 +134,7 @@ def reminder():
         feedType = 'rem'
         title = form.title.data
         detail = form.detail.data
-        reminderStartDate = form.reminder_date.data
+        reminderStartDate = form.reminderStartDate.data
         reminderEndDate = None
         plantingType = None
         plantingDate = None
@@ -162,12 +162,13 @@ def reminderDetail(reminder_id):
 @login_required
 #dashboard
 def reminderDelete(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    reminder = Feed.query.filter_by(id=reminder_id).first_or_404()
     reminder.active = False
     db.session.commit()
     flash("Reminder Deleted")
     app.logger.info('%s: Deleted Reminder: %s by: %s', datetime.datetime.utcnow(), reminder.title, session.get('username'))
 
+    show_records = app.config['DEFAULT_ENTRIES_PER_PAGE']
     records_per_page = app.config['DEFAULT_ENTRIES_PER_PAGE']
     feed = getFeedData(session['userID'])
     return render_template('gardenDiary/dashboard.html', feed=feed, show_records=show_records, records_per_page=records_per_page)
@@ -175,7 +176,7 @@ def reminderDelete(reminder_id):
 @app.route('/reminderEdit/<int:reminder_id>', methods=('GET', 'POST'))
 @login_required
 def reminderEdit(reminder_id):
-    reminder = Reminder.query.filter_by(id=reminder_id).first_or_404()
+    reminder = Feed.query.filter_by(id=reminder_id).first_or_404()
     form = ReminderForm(obj=reminder)
     if form.validate_on_submit():
         original_badge = reminder.badge

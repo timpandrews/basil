@@ -21,7 +21,7 @@ class ReminderForm(Form):
         validators.Length(max=80)
         ])
     detail = TextAreaField('Detail', validators=[validators.Required()])
-    reminder_date = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])
+    reminderStartDate = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])
 
 class PlantingForm(Form):
     badge = FileField('Badge', validators=[
