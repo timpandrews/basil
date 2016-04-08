@@ -32,6 +32,7 @@
                 {{ render_field(form.badge, class='form-control') }}
                 {{ render_field(form.plantName, class='form-control') }}
                 {{ render_field(form.plantingType, class='form-control') }}
+                {{ render_field(form.plantingDate, class='form-control', id='plantingDate') }}
 
                 {% if action == "new" %}
                     <button type="submit" class="btn btn-success">Add New Planting <i class="fa fa-bell"></i></button>

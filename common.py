@@ -15,7 +15,7 @@ def getFeedData(userID):
 
     feed = Feed.query.filter_by(active=True)\
         .filter(Feed.user_id.in_(followingList))\
-        .order_by(Feed.publish_date.desc())\
+        .order_by(Feed.displayDate.desc())\
         .all()
 
     print "Qty-Feed: ", len(feed)

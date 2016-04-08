@@ -47,6 +47,7 @@ def diary():
         except:
             flash("The image was not uploaded")
         user = User.query.filter_by(id=session['userID']).first()
+        displayDate = form.displayDate.data
         feedType = 'dia'
         title = form.title.data
         detail = form.detail.data
@@ -55,7 +56,17 @@ def diary():
         plantingType = None
         plantingDate = None
         plantName = None
-        diary = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
+        diary = Feed(user,
+                     feedType,
+                     title,
+                     detail,
+                     reminderStartDate,
+                     reminderEndDate,
+                     plantingType,
+                     plantingDate,
+                     plantName,
+                     displayDate,
+                     filename)
         db.session.add(diary)
         db.session.commit()
         flash("New Diary Saved!")

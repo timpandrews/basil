@@ -4,6 +4,8 @@
 
 //DatePicker Fields
 $( "#reminderStartDate" ).datepicker();
+$( "#displayDate" ).datepicker();
+$( "#plantingDate" ).datepicker();
 
 
 //Change following button to un-follow on hover

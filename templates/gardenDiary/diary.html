@@ -32,6 +32,7 @@
                 {{ render_field(form.badge, class='form-control') }}
                 {{ render_field(form.title, class='form-control') }}
                 {{ render_field(form.detail, class='form-control', rows=10) }}
+                {{ render_field(form.displayDate, class='form-control', id='displayDate') }}
 
                 {% if action == "new" %}
                     <button type="submit" class="btn btn-success">Add New Entry <i class="fa fa-leaf"></i></button>
