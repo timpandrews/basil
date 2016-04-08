@@ -14,8 +14,17 @@
                 <img src="{{ planting.imgsrc }}" height="150px" class="img-rounded">
             {% endif %}
 
-            <h3>{{ planting.plantingType }}</h3>
-            <p>{{ planting.plantName }}</p>
+            <h3>{{ planting.plantName }}</h3>
+            <p>
+                {% if planting.plantingType == 'sowI' %}
+                    Sow seeds indoor
+                {% elif planting.plantingType == 'sowO' %}
+                    Sow seeds outdoors
+                {% elif planting.plantingType == 'tra' %}
+                    Transplant seedlings outdoors
+                {% endif %}
+            </p>
+
 
             {% if session.get('userID') %}
                 <a href="{{ url_for('plantingEdit', planting_id=planting.id) }}"><i class="fa fa-pencil fa-lg"></i></a>

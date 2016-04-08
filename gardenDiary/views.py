@@ -239,14 +239,14 @@ def planting():
 @app.route('/plantingDetail/<int:planting_id>')
 @login_required
 def plantingDetail(planting_id):
-    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    planting = Feed.query.filter_by(id=planting_id).first_or_404()
     return render_template('gardenDiary/plantingDetail.html', planting=planting)
 
 @app.route('/plantingDelete/<int:planting_id>')
 @login_required
 #dashboard
 def plantingDelete(planting_id):
-    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    planting = Feed.query.filter_by(id=planting_id).first_or_404()
     planting.active = False
     db.session.commit()
     flash("Planting Deleted")
@@ -260,7 +260,7 @@ def plantingDelete(planting_id):
 @app.route('/plantingEdit/<int:planting_id>', methods=('GET', 'POST'))
 @login_required
 def plantingEdit(planting_id):
-    planting = Planting.query.filter_by(id=planting_id).first_or_404()
+    planting = Feed.query.filter_by(id=planting_id).first_or_404()
     form = PlantingForm(obj=planting)
     if form.validate_on_submit():
         original_badge = planting.badge
