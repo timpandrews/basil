@@ -145,12 +145,23 @@ def reminder():
         feedType = 'rem'
         title = form.title.data
         detail = form.detail.data
+        displayDate = form.reminderStartDate.data
         reminderStartDate = form.reminderStartDate.data
         reminderEndDate = None
         plantingType = None
         plantingDate = None
         plantName = None
-        reminder = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
+        reminder = Feed(user,
+                        feedType,
+                        title,
+                        detail,
+                        reminderStartDate,
+                        reminderEndDate,
+                        plantingType,
+                        plantingDate,
+                        plantName,
+                        displayDate,
+                        filename)
         db.session.add(reminder)
         db.session.commit()
         flash("New Reminder Created!")
@@ -192,6 +203,7 @@ def reminderEdit(reminder_id):
     if form.validate_on_submit():
         original_badge = reminder.badge
         form.populate_obj(reminder) # replaced entry with new data from form.
+        reminder.displayDate =form.reminderStartDate.data # for now displayDate = startDate
         if form.badge.has_file():
             badge = request.files.get('badge')
             try:

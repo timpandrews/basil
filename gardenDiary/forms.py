@@ -21,7 +21,7 @@ class DiaryForm(Form):
 
 class ReminderForm(Form):
     badge = FileField('Badge', validators=[
-        FileAllowed(['jpg', 'png'], 'Images only.')
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Images only.')
         ])
     title = StringField('Title', validators=[
         validators.Required(),
@@ -32,7 +32,7 @@ class ReminderForm(Form):
 
 class PlantingForm(Form):
     badge = FileField('Badge', validators=[
-        FileAllowed(['jpg', 'png'], 'Images only.')
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Images only.')
         ])
     plantName = StringField('Plant Name', validators=[
         validators.Required(),
