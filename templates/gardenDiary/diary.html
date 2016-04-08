@@ -16,9 +16,9 @@
             {% from "_formHelpers.html" import render_field %}
 
             {% if action == "new" %}
-                <form method="POST" action="{{ url_for('diaryEntry') }}" enctype="multipart/form-data" role="form">
+                <form method="POST" action="{{ url_for('diary') }}" enctype="multipart/form-data" role="form">
             {% else %}
-                <form method="POST" action="{{ url_for('diaryEntryEdit', diary_id=entry.id) }}" enctype="multipart/form-data" role="form">
+                <form method="POST" action="{{ url_for('diaryEdit', diary_id=diary.id) }}" enctype="multipart/form-data" role="form">
             {% endif %}
 
                 {{ form.hidden_tag() }}
@@ -31,7 +31,7 @@
 
                 {{ render_field(form.badge, class='form-control') }}
                 {{ render_field(form.title, class='form-control') }}
-                {{ render_field(form.body, class='form-control', rows=10) }}
+                {{ render_field(form.detail, class='form-control', rows=10) }}
 
                 {% if action == "new" %}
                     <button type="submit" class="btn btn-success">Add New Entry <i class="fa fa-leaf"></i></button>

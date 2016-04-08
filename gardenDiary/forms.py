@@ -10,7 +10,7 @@ class DiaryForm(Form):
         validators.Required(),
         validators.Length(max=80)
         ])
-    body = TextAreaField('Content', validators=[validators.Required()])
+    detail = TextAreaField('Content', validators=[validators.Required()])
 
 class ReminderForm(Form):
     badge = FileField('Badge', validators=[
@@ -21,7 +21,7 @@ class ReminderForm(Form):
         validators.Length(max=80)
         ])
     detail = TextAreaField('Detail', validators=[validators.Required()])
-    reminder_date = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])
+    reminderStartDate = DateField('Reminder Date', format='%m/%d/%Y', validators=[validators.Required()])
 
 class PlantingForm(Form):
     badge = FileField('Badge', validators=[
@@ -33,5 +33,5 @@ class PlantingForm(Form):
         ])
     plantingType = SelectField(
         'Planting Type',
-        choices=[('sowIndoors', 'Sow seeds indoor'), ('sowOutdoors', 'Sow seeds outdoors'), ('plantSeedlings', 'Plant seedlings outdoors')]
+        choices=[('sowI', 'Sow seeds indoor'), ('sowO', 'Sow seeds outdoors'), ('tran', 'Transplant seedlings outdoors')]
     )

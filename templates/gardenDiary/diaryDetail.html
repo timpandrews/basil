@@ -10,17 +10,17 @@
 
             {% include '_flashMessages.html' %}
 
-            {% if entry.badge %}
-                <img src="{{ entry.imgsrc }}" height="150px" class="img-rounded">
+            {% if diary.badge %}
+                <img src="{{ diary.imgsrc }}" height="150px" class="img-rounded">
             {% endif %}
 
-            <h3>{{ entry.title }}</h3>
-            <p>{{ entry.body }}</p>
+            <h3>{{ diary.title }}</h3>
+            <p>{{ diary.detail }}</p>
 
             {% if session.get('userID') %}
-                <a href="{{ url_for('diaryEntryEdit', diary_id=entry.id) }}"><i class="fa fa-pencil fa-lg"></i></a>
+                <a href="{{ url_for('diaryEdit', diary_id=diary.id) }}"><i class="fa fa-pencil fa-lg"></i></a>
                 &nbsp;&nbsp;&nbsp;
-                <a href="{{ url_for('diaryEntryDelete', diary_id=entry.id) }}"><i class="fa fa-trash fa-lg"></i></a>
+                <a href="{{ url_for('diaryDelete', diary_id=diary.id) }}"><i class="fa fa-trash fa-lg"></i></a>
                 <br><br>
             {% endif %}
 
