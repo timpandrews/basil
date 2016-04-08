@@ -284,10 +284,6 @@ def plantingEdit(planting_id):
 
 
 
-
-
-
-
 ### Gardeners Page ###
 @app.route('/gardeners')
 @login_required
