@@ -13,6 +13,7 @@ class Feed(db.Model):
     plantingDate = db.Column(db.DateTime)
     plantName = db.Column(db.String(256))
     badge = db.Column(db.String(256))
+    displayDate = db.Column(db.DateTime)
     publish_date = db.Column(db.DateTime)
     update_date = db.Column(db.DateTime)
     public = db.Column(db.Boolean)
@@ -34,6 +35,7 @@ class Feed(db.Model):
                  plantingType,
                  plantingDate,
                  plantName,
+                 displayDate,
                  badge=None,
                  publish_date=None,
                  update_date=None,
@@ -48,6 +50,7 @@ class Feed(db.Model):
         self.reminderEndDate = reminderEndDate
         self.plantingType = plantingType
         self.plantName = plantName
+        self.displayDate = displayDate
         if publish_date is None:
             self.publish_date = datetime.utcnow()
         else:
