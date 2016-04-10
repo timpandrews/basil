@@ -41,7 +41,7 @@ class PlantingForm(Form):
     plantingType = SelectField(
         'Planting Type',
         choices=[('sowI', 'Sow seeds indoor'), ('sowO', 'Sow seeds outdoors'), ('tran', 'Transplant seedlings outdoors')]
-    )
+        )
     plantingDate = DateField(
         'Planting Date',
         format='%m/%d/%Y',

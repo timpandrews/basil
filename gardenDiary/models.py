@@ -49,6 +49,7 @@ class Feed(db.Model):
         self.reminderStartDate = reminderStartDate
         self.reminderEndDate = reminderEndDate
         self.plantingType = plantingType
+        self.plantingDate = plantingDate
         self.plantName = plantName
         self.displayDate = displayDate
         if publish_date is None:

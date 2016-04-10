@@ -239,14 +239,25 @@ def planting():
             flash("The image was not uploaded")
         user = User.query.filter_by(id=session['userID']).first()
         feedType = 'pla'
+        displayDate = form.plantingDate.data
         title = None
         detail = None
         reminderStartDate = None
         reminderEndDate = None
         plantingType = form.plantingType.data
-        plantingDate = None
         plantName = form.plantName.data
-        planting = Feed(user, feedType, title, detail, reminderStartDate, reminderEndDate, plantingType, plantingDate, plantName, filename)
+        plantingDate = form.plantingDate.data
+        planting = Feed(user,
+                        feedType,
+                        title,
+                        detail,
+                        reminderStartDate,
+                        reminderEndDate,
+                        plantingType,
+                        plantingDate,
+                        plantName,
+                        displayDate,
+                        filename)
         db.session.add(planting)
         db.session.commit()
         flash("New Planting Created!")
