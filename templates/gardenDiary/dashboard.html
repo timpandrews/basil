@@ -26,7 +26,7 @@
                                     {{ feedEntry.displayDate.strftime('%Y-%m-%d') }}
                                     <h4><a href="{{ url_for('diaryDetail', diary_id=feedEntry.id) }}">{{ feedEntry.title }}</a></h4>
                                     <p>{{ feedEntry.diaryUser.fullname }}</p>
-                                    <p>{{ feedEntry.body }}</p>
+                                    <div class="detail">{{ feedEntry.detail|safe }}</div>
                                 </div>
                             </div>
                             <hr/>

@@ -4,7 +4,7 @@
 
     <div class="row">
 
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-8 col-sm-offset-2">
 
             <h1>Garden Diary -- Entry Detail</h1>
 
@@ -15,7 +15,7 @@
             {% endif %}
 
             <h3>{{ diary.title }}</h3>
-            <p>{{ diary.detail }}</p>
+            <p>{{ diary.detail|safe }}</p>
 
             {% if session.get('userID') %}
                 <a href="{{ url_for('diaryEdit', diary_id=diary.id) }}"><i class="fa fa-pencil fa-lg"></i></a>

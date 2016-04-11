@@ -32,6 +32,10 @@ body {
     font-weight: bold;
 }
 
+.detail {
+    text-align: left;
+}
+
 /*Landing Page - Pricing Section*/
 .amount {
     font-size: xx-large;

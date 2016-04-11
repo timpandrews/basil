@@ -4,7 +4,7 @@
 
     <div class="row">
 
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-8 col-sm-offset-2">
             {% if action == "new" %}
                 <h1>Garden Diary -- Add New Entry</h1>
             {% else %}
@@ -31,7 +31,7 @@
 
                 {{ render_field(form.badge, class='form-control') }}
                 {{ render_field(form.title, class='form-control') }}
-                {{ render_field(form.detail, class='form-control', rows=10) }}
+                {{ render_field(form.detail, class='form-control', rows=10, id='detail') }}
                 {{ render_field(form.displayDate, class='form-control', id='displayDate') }}
 
                 {% if action == "new" %}
@@ -39,6 +39,12 @@
                 {% else %}
                     <button type="submit" class="btn btn-success">Update Entry <i class="fa fa-leaf"></i></button>
                 {% endif %}
+                <script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+                <script>
+                    CKEDITOR.replace( 'detail', {
+                        uiColor: '#188610'
+                    });
+                </script>
 
             </form>
 
